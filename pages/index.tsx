@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import GameCard from './gameCard';
+import GameCard from '../components/gameCard';
 
 const games = [
   {
