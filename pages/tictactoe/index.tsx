@@ -31,7 +31,7 @@ const TicTacToe: NextPage = () => {
         ? GameState.PLAYER_WINS : GameState.CPU_WINS);
     }
     if(currentGameState === GameState.DRAW) {
-      toast("It's a draw!");
+      toast.info("It's a draw!");
     }
   }, [currentGameState]);
 
@@ -59,6 +59,7 @@ const TicTacToe: NextPage = () => {
       if (tiles[a] && tiles[a] === tiles[b] && tiles[a] === tiles[c]) {
         setWinner(tiles[a]);
         setHighlight([a, b, c]);
+        // return tiles[a];
       } 
       else if (tiles.every((tile) => tile === symbols[Players.PLAYER] || tile === symbols[Players.CPU])) {
         updateGameState(GameState.DRAW);
@@ -70,13 +71,15 @@ const TicTacToe: NextPage = () => {
   async function cPUPlay() {
     calculateWinner();
     if (!winner) {
-      const nextMove: number = await getAiDecision();
-      play(nextMove);
+      const nextMove: number = getAiDecision();
+      setTimeout(() => {
+        play(nextMove);
+      }, Math.floor(Math.random() * 1000));
     }
     updateGameState(GameState.PLAYER_IS_NEXT);
   }
 
-  async function getAiDecision(): Promise<any> {
+  async function getRandomDecision(): Promise<any> {
     const emptyIndexes: any[] = [];
     tiles.forEach((cell, index) => {
       if (!cell) emptyIndexes.push(index);
@@ -87,6 +90,49 @@ const TicTacToe: NextPage = () => {
         resolve(emptyIndexes[randomIndex]);
       }, 600);
     });
+  }
+
+  function minimax(depth: number, isMaximizing: boolean) {
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < tiles.length; i++) {
+        if (tiles[i] === null) {
+          tiles[i] = symbols[Players.CPU];
+          let score = minimax(depth + 1, false);
+          tiles[i] = null;
+          bestScore = Math.max(score, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < tiles.length; i++) {
+        if (tiles[i] === null) {
+          tiles[i] = symbols[Players.PLAYER];
+          let score = minimax(depth + 1, true);
+          tiles[i] = null;
+          bestScore = Math.min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
+
+  function getAiDecision() {
+    let bestScore: number = -Infinity;
+    let bestMove: number = -1;
+    for (let i = 0; i < tiles.length; i++) {
+      if (tiles[i] === null) {
+        tiles[i] = symbols[Players.CPU];
+        const score: number = minimax(0, true);
+        tiles[i] = null;
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = i;
+        }
+      }
+    }
+    return bestMove
   }
 
   function play(move: number) {
@@ -113,7 +159,6 @@ const TicTacToe: NextPage = () => {
   }
 
   // TODO: add logic to check if game is a draw
-  // TODO: add simple ai to play as cpu
 
   return (
     <div>
@@ -121,7 +166,7 @@ const TicTacToe: NextPage = () => {
         <title>Tic Tac Toe</title>
       </Head>
       <main className="flex min-h-screen bg-slate-100 space-y-6 flex-col justify-center items-center">
-       { winner && <h1 className="text-4xl pb-3">{winner === Players.CPU ? 'AI': 'You'} won!</h1> }
+       { winner && <h1 className="text-4xl pb-3">{winner === symbols[Players.CPU] ? '🤖': '🙋🏾‍♂️'} won!</h1> }
         <div className="grid grid-cols-3 gap-4">
           {tiles.map((_, index: number) => renderTile(index))}
         </div>
