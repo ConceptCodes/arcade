@@ -2,4 +2,14 @@
 
 [Live Preview](https://arcade.conceptcodes.dev/)
 
-Arcade is a simple website built using [Next.js](http://next.com) and [Tailwind CSS](http://tailwind.com). It is a simple website that is built to be a portfolio for a game developer. It is built with Next.js and Tailwind CSS. It is a simple website that is built to be a portfolio for a game developer.
+There is a collection of games that can be played in the browser.
+The one caveat is your up against an AI opponent. Have Fun and Enjoy!
+
+
+## Technologies
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React](https://reactjs.org/)
+- [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+
