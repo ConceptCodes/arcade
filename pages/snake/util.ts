@@ -1,8 +1,8 @@
 export enum Direction {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT
+  UP = 'UP',
+  DOWN = 'DOWN',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
 }
 
 export class Snake {
@@ -34,7 +34,8 @@ export class Snake {
   }
 
   public isOnWall(cols: number, rows: number): boolean {
-    return this.x < 0 || this.x >= cols || this.y < 0 || this.y >= rows;
+    // check if current x and y position is on the x and y of the edge of the grid
+    return this.x === 0 || this.x === rows || this.y === 0 || this.y === cols;
   }
 
 

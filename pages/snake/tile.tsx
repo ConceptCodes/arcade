@@ -5,7 +5,6 @@ export enum TileType {
   SNAKE,
   FOOD,
 }
-
 export interface ITileProps {
   type: TileType;
 }
@@ -19,9 +18,7 @@ const Tile: FC<ITileProps> = ({
   switch (type) {
     case TileType.EMPTY:
       return (
-        <div className={`w-${size} h-${size}`}>
-
-        </div>
+        <div className={`w-${size} h-${size} border-2`} />
       );
     case TileType.SNAKE:
       return (
@@ -31,14 +28,8 @@ const Tile: FC<ITileProps> = ({
       );
     case TileType.FOOD:
       return (
-        <div className={`w-${size} h-${size} flex items-center justify-center`}>
+        <div className={`w-${size} h-${size} bg-slate-700 rounded-lg flex items-center justify-center`}>
           <h1>🍔</h1>
-        </div>
-      );
-    default:
-      return (
-        <div className={`w-${size} h-${size}`}>
-
         </div>
       );
   }
