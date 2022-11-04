@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useGameState, GameState, Players } from "../../hooks/useGameState";
 import { toast } from "react-toastify";
-import { useHotkeys } from "react-hotkeys-hook";
+import useHotkeys from "@reecelucas/react-use-hotkeys";
 import Tile from "./tile";
 
 const TicTacToe: NextPage = () => {
@@ -12,7 +12,7 @@ const TicTacToe: NextPage = () => {
   const [winner, setWinner] = useState(null);
   const [highlight, setHighlight] = useState<number[]>([]);
 
-  useHotkeys('escape', () => {
+  useHotkeys('Escape', () => {
     updateBoard([...Array(9).fill(null)]);
     setWinner(null);
     setHighlight([]);

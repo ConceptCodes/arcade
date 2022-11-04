@@ -16,6 +16,13 @@ const games = [
     link: '/chess', 
     color: 'bg-purple-400',
     icon: '♟'
+  },
+  {
+    title: 'Snake',
+    description: 'A simple game of snake',
+    link: '/snake', 
+    color: 'bg-yellow-400',
+    icon: '🐍'
   }
 ]
 
