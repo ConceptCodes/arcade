@@ -45,7 +45,7 @@ const ConnectFourPage: NextPage = () => {
             <div className="flex" key={i}>
               {row.map((tile, j) => (
                 <div onClick={() => play(j)}>
-                  <Tile type={tile} key={j} val={i} />
+                  <Tile type={tile} key={j} />
                 </div>
               ))}
             </div>
