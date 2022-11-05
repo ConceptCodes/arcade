@@ -19,7 +19,7 @@ const TicTacToe: NextPage = () => {
   });
 
   const symbols = {
-    [Players.PLAYER]: "❌",
+    [Players.YOU]: "❌",
     [Players.CPU]: "⭕",
   };
 
@@ -27,7 +27,7 @@ const TicTacToe: NextPage = () => {
     calculateWinner();
     if (!winner && currentGameState === GameState.CPU_IS_NEXT) cPUPlay();
     if (winner) {
-      updateGameState((winner === symbols[Players.PLAYER]) 
+      updateGameState((winner === symbols[Players.YOU]) 
         ? GameState.PLAYER_WINS : GameState.CPU_WINS);
     }
     if(currentGameState === GameState.DRAW) {
@@ -61,7 +61,7 @@ const TicTacToe: NextPage = () => {
         setHighlight([a, b, c]);
         // return tiles[a];
       } 
-      else if (tiles.every((tile) => tile === symbols[Players.PLAYER] || tile === symbols[Players.CPU])) {
+      else if (tiles.every((tile) => tile === symbols[Players.YOU] || tile === symbols[Players.CPU])) {
         updateGameState(GameState.DRAW);
       }
     }
@@ -108,7 +108,7 @@ const TicTacToe: NextPage = () => {
       let bestScore = Infinity;
       for (let i = 0; i < tiles.length; i++) {
         if (tiles[i] === null) {
-          tiles[i] = symbols[Players.PLAYER];
+          tiles[i] = symbols[Players.YOU];
           let score = minimax(depth + 1, true);
           tiles[i] = null;
           bestScore = Math.min(score, bestScore);
@@ -139,7 +139,7 @@ const TicTacToe: NextPage = () => {
     if (winner) return;
     tiles[move] =
       currentGameState === GameState.PLAYER_IS_NEXT
-        ? symbols[Players.PLAYER]
+        ? symbols[Players.YOU]
         : symbols[Players.CPU];
     updateBoard([...tiles]);
   }

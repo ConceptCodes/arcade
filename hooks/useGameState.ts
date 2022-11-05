@@ -4,12 +4,12 @@ export enum GameState {
   PLAYER_IS_NEXT = 'PLAYER_IS_NEXT',
   CPU_IS_NEXT = 'CPU_IS_NEXT',
   PLAYER_WINS = 'PLAYER_WINS',
-  CPU_WINS = 'CPUWINS',
+  CPU_WINS = 'CPU_WINS',
   DRAW = 'DRAW',
 }
 
 export enum Players {
-  PLAYER = 'YOU',
+  YOU = 'YOU',
   CPU = 'CPU',
 }
 

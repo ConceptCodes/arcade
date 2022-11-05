@@ -13,11 +13,15 @@ interface TileProps {
 const Tile: FC<TileProps> = ({ type }) => {
   switch (type) {
     case TileColor.RED:
-      return <div className="w-24 h-24 bg-red-500" />;
+      return <div className="flex border-2 text-4xl w-24 h-24 justify-center items-center">
+        🔴
+      </div>
     case TileColor.YELLOW:
-      return <div className="w-24 h-24 bg-yellow-500" />;
+      return <div className="flex border-2 text-4xl w-24 h-24 justify-center items-center">
+        🟡
+      </div>
     case TileColor.WHITE:
-      return <div className="w-24 h-24 border-2 bg-white" />;
+      return <div className="flex w-24 h-24 border-2 bg-white" />;
   }
 }
 
