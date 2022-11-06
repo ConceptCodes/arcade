@@ -6,7 +6,7 @@ const games = [
   {
     title: 'Tic Tac Toe',
     description: 'A simple game of tic tac toe',
-    link: '/tictactoe',
+    link: '/tic-tac-toe',
     color: 'bg-red-400',
     icon: '⏳'
   },
