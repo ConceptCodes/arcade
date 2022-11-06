@@ -2,12 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useGameState, GameState, Players } from "../../hooks/useGameState";
-import { toast } from "react-toastify";
-import { useHotkeys } from "react-hotkeys-hook";
 import Tile from "./tile";
 import {
   // getRandomDecision,
-  // calculateWinner,
   symbols,
   getAiDecision,
   emptyTiles,
@@ -20,14 +17,6 @@ const TicTacToe: NextPage = () => {
   const [winner, setWinner] = useState<Players>();
   const [highlight, setHighlight] = useState<number[]>([]);
 
-  useHotkeys("escape", () => {
-    updateBoard([...Array(9).fill(null)]);
-    setWinner(undefined);
-    setHighlight([]);
-    updateGameState(GameState.PLAYER_IS_NEXT);
-  });
-
-  // NOTE: Trigger the AI to play
   useEffect(() => {
     if (winner) {
       updateGameState(
@@ -56,17 +45,15 @@ const TicTacToe: NextPage = () => {
   async function cPUPlay() {
     if (winner || currentGameState === GameState.DRAW) return;
     const nextMove = getAiDecision(tiles);
-    console.log('nextMove', nextMove);
     play(nextMove);
     updateGameState(GameState.PLAYER_IS_NEXT);
   }
 
   function play(move: number) {
     if (winner || currentGameState === GameState.DRAW) return;
-    tiles[move] =
-      currentGameState === GameState.PLAYER_IS_NEXT
-        ? symbols[Players.PLAYER]
-        : symbols[Players.CPU];
+    tiles[move] = currentGameState === GameState.PLAYER_IS_NEXT
+      ? symbols[Players.PLAYER]
+      : symbols[Players.CPU];
     updateBoard([...tiles]);
   }
 
@@ -78,7 +65,7 @@ const TicTacToe: NextPage = () => {
       </Head>
       <main className="flex min-h-screen bg-slate-100 space-y-6 flex-col justify-center items-center">
         {winner && (
-          <h1 className="text-4xl pb-3">
+          <h1 className="text-6xl pb-3">
             {winner === symbols[Players.CPU] ? "🤖" : "🙋🏾‍♂️"} won
           </h1>
         )}

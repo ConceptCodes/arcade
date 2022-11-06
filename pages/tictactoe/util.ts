@@ -1,4 +1,4 @@
-import { Players, GameState } from "../../hooks/useGameState";
+import { Players } from "../../hooks/useGameState";
 
 export const symbols = {
   [Players.PLAYER]: "❌",
