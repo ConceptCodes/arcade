@@ -2,9 +2,15 @@ import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Tile, { TileColor } from "./tile";
-import { useGameState, GameState } from '../../hooks/useGameState';
+import { useGameState, GameState } from "../../hooks/useGameState";
 import { Players } from "../../hooks/useGameState";
-import { isColumnValid, makeMove, getValidMoves, isValidMove, shuffle } from './util';
+import {
+  makeMove,
+  getValidMoves,
+  isValidMove,
+  shuffle,
+  tiles,
+} from "./util";
 
 const ConnectFourPage: NextPage = () => {
   const COLS = 6;
@@ -16,11 +22,6 @@ const ConnectFourPage: NextPage = () => {
   for (let i = 0; i < COLS; i++) {
     rows.push(Array.from(Array(ROWS), () => TileColor.WHITE));
   }
-
-  const tiles = {
-    [Players.CPU]: TileColor.RED,
-    [Players.YOU]: TileColor.YELLOW,
-  };
 
   function calculateWinner(_player: Players): boolean {
     const chosen = tiles[_player];
@@ -86,111 +87,133 @@ const ConnectFourPage: NextPage = () => {
         if (row[column] === TileColor.WHITE) {
           emptyIndexes.push(rowIndex);
         }
+        console.log(row);
       });
       const move = Math.max(...emptyIndexes);
+      console.log({ column, emptyIndexes });
       board[move][column] = tiles[currentPlayer];
       setBoard([...board]);
-      // if (calculateWinner(currentPlayer)) {
-      //   crownWinner(currentPlayer);
-      // }
-      setCurrentPlayer(currentPlayer === Players.YOU ? Players.CPU : Players.YOU);
+      setCurrentPlayer(
+        currentPlayer === Players.YOU ? Players.CPU : Players.YOU
+      );
     }
   }
 
   function MiniMaxAlphaBeta(depth: number, player: Players): number {
-    //get array of possible moves 
+    //get array of possible moves
     const validMoves = getValidMoves(board);
     shuffle(validMoves); // shuffle the array to randomize the moves
-    let bestMove  = validMoves[0];
+    let bestMove = validMoves[0];
     let bestScore = -Infinity;
 
     // # initial alpha & beta values for alpha-beta pruning
     let alpha = -Infinity;
     let beta = Infinity;
 
-    const opponent = (player == Players.CPU) ? Players.YOU : Players.CPU;
-  
+    const opponent = player === Players.CPU ? Players.YOU : Players.CPU;
+
     // # go through all of those boards
     for (let move of validMoves) {
-        // # create new board from move
-        let tempBoard: any = makeMove(board, move, player);
-        // # call min on that new board
-        let boardScore = minimizeBeta(tempBoard.board, depth - 1, alpha, beta, player, opponent)
-        if (boardScore > bestScore) {
-            bestScore = boardScore;
-            bestMove = move;
-        }
+      // # create new board from move
+      let tempBoard: any = makeMove(board, move, player)[0];
+      // # call min on that new board
+      let boardScore = minimizeBeta(
+        tempBoard,
+        depth - 1,
+        alpha,
+        beta,
+        player,
+        opponent
+      );
+      if (boardScore > bestScore) {
+        bestScore = boardScore;
+        bestMove = move;
+      }
     }
     return bestMove;
   }
 
   function minimizeBeta(
-    board: TileColor[][], 
-    depth: number, 
-    a: number, 
-    b: number, 
-    player: Players, 
-    opponent: Players,
-    ): number {
-      let validMoves: number[] = [];
-      for (let col = 0; col < board[0].length; col++) {
-          // # if column col is a legal move...
-          if (isValidMove(col, board)) {
-            // # make the move in column col for curr_player
-            let temp: any = makeMove(board, col, player);
-            validMoves.push(temp.col);
-          }
+    board: TileColor[][],
+    depth: number,
+    a: number,
+    b: number,
+    player: Players,
+    opponent: Players
+  ): number {
+    let validMoves: number[] = [];
+    for (let col = 0; col < board[0].length; col++) {
+      // # if column col is a legal move...
+      if (isValidMove(col, board)) {
+        // # make the move in column col for curr_player
+        let temp: any = makeMove(board, col, player)[1];
+        validMoves.push(temp);
       }
-      // # check to see if game over
-      // if (depth == 0 || validMoves.length == 0) alert('game over'); 
-      
-      validMoves = getValidMoves(board); 
-      let beta = b
-      
-      // # if end of tree evaluate scores
-      for (let move of validMoves) {
-        let boardScore = Infinity;
-        // # else continue down tree as long as ab conditions met
-        if (a < beta) {
-          let tempBoard: any = makeMove(board, move, opponent);
-          boardScore = maximizeAlpha(tempBoard.board, depth - 1, a, beta, player, opponent);
-        }
+    }
+    // # check to see if game over
+    // if (depth == 0 || validMoves.length == 0) alert('game over');
 
-        if (boardScore < beta) beta = boardScore;
+    validMoves = getValidMoves(board);
+    let beta = b;
+
+    // # if end of tree evaluate scores
+    for (let move of validMoves) {
+      let boardScore = Infinity;
+      // # else continue down tree as long as ab conditions met
+      if (a < beta) {
+        let tempBoard: any = makeMove(board, move, opponent)[0];
+        boardScore = maximizeAlpha(
+          tempBoard,
+          depth - 1,
+          a,
+          beta,
+          player,
+          opponent
+        );
       }
-      return beta;
+
+      if (boardScore < beta) beta = boardScore;
+    }
+    return beta;
   }
 
   function maximizeAlpha(
-    board: TileColor[][], 
-    depth: number, 
-    a: number, 
-    b: number, 
-    player: Players, 
-    opponent: Players,
+    board: TileColor[][],
+    depth: number,
+    a: number,
+    b: number,
+    player: Players,
+    opponent: Players
   ): number {
     let validMoves: number[] = [];
     for (let col = 0; col < board.length; col++) {
       // # if column col is a legal move...
       if (isValidMove(col, board)) {
         // # make the move in column col for curr_player
-        let temp: any = makeMove(board, col, player);
-        validMoves.push(temp.col);
+        let temp: any = makeMove(board, col, player)[1];
+        validMoves.push(temp);
       }
     }
     // # check to see if game over
     // if (depth == 0 || validMoves.length == 0) alert('game over');
 
-    let alpha = a;        
+    let alpha = a;
     // # if end of tree, evaluate scores
     for (let move of validMoves) {
       let boardScore = -Infinity;
       if (alpha < b) {
-        let tempBoard: any = makeMove(board, move, player);
-        boardScore = minimizeBeta(tempBoard.board, depth - 1, alpha, b, player, opponent);
+        let tempBoard: any = makeMove(board, move, player)[0];
+        boardScore = minimizeBeta(
+          tempBoard,
+          depth - 1,
+          alpha,
+          b,
+          player,
+          opponent
+        );
       }
 
-      if (boardScore > alpha) alpha = boardScore
+      if (boardScore > alpha) alpha = boardScore;
     }
     return alpha;
   }
@@ -198,11 +221,12 @@ const ConnectFourPage: NextPage = () => {
   useEffect(() => {
     if (calculateWinner(Players.YOU)) crownWinner(Players.YOU);
     if (calculateWinner(Players.CPU)) crownWinner(Players.CPU);
-    // if (currentPlayer === Players.CPU) {
-    //   setTimeout(() => {
-    //     play(MiniMaxAlphaBeta(4, Players.CPU));
-    //   }, 1000);
-    // }
+    if (currentPlayer === Players.CPU && !winner) {
+      setTimeout(() => {
+        const column = MiniMaxAlphaBeta(4, Players.CPU);
+        play(column);
+      }, 1000);
+    }
   }, [board]);
 
   return (
@@ -215,7 +239,7 @@ const ConnectFourPage: NextPage = () => {
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <section className="">
           <h1 className="text-6xl font-bold pb-3">
-            { winner && `Winner is ${ winner === Players.YOU ? '🟡' : '🔴'}` }
+            {winner && `Winner is ${winner === Players.YOU ? "🟡" : "🔴"}`}
           </h1>
           {board.map((row, i) => (
             <div className="flex" key={i}>

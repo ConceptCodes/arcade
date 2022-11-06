@@ -23,7 +23,7 @@ export function getValidMoves(board: number[][]) {
 // #check if the played move is in empty column or not
 export function isValidMove(col: number, board: number[][]) {
   for (let i = 0; i < board.length; i++) {
-    if (board[i][col] == TileColor.WHITE) return true;
+    if (board[i][col] === TileColor.WHITE) return true;
   }
   return false;
 }
@@ -38,14 +38,17 @@ export function shuffle(array: number[]) {
   }
 }
 
-export function makeMove(board: number[][], col: number, player: any) {
+export const tiles = {
+  [Players.CPU]: TileColor.RED,
+  [Players.YOU]: TileColor.YELLOW,
+};
+
+export function makeMove(board: TileColor[][], col: number, player: Players) {
   let tmp = [...board];
   for (let i = tmp.length - 1; i >= 0; i--) {
-    if (tmp[i][col] == TileColor.WHITE) {
-      tmp[i][col] = player;
-      console.log({ tmp });
-      return { board: tmp, row: i, col };
-      break;
+    if (tmp[i][col] === TileColor.WHITE) {
+      tmp[i][col] = tiles[player];
     }
   }
+  return [board, col];
 }
