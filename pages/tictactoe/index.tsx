@@ -20,12 +20,12 @@ const TicTacToe: NextPage = () => {
   const [winner, setWinner] = useState<Players>();
   const [highlight, setHighlight] = useState<number[]>([]);
 
-  // useHotkeys("escape", () => {
-  //   updateBoard([...Array(9).fill(null)]);
-  //   setWinner(undefined);
-  //   setHighlight([]);
-  //   updateGameState(GameState.PLAYER_IS_NEXT);
-  // });
+  useHotkeys("escape", () => {
+    updateBoard([...Array(9).fill(null)]);
+    setWinner(undefined);
+    setHighlight([]);
+    updateGameState(GameState.PLAYER_IS_NEXT);
+  });
 
   // NOTE: Trigger the AI to play
   useEffect(() => {
@@ -38,7 +38,7 @@ const TicTacToe: NextPage = () => {
     }
     if (!winner && currentGameState === GameState.CPU_IS_NEXT) cPUPlay();
     if (!winner && (emptyTiles(tiles).length === 0)) updateGameState(GameState.DRAW);
-    let win = calculateWinner(tiles);
+    let win: any = calculateWinner(tiles);
     if (win) {
       setWinner(win[0]);
       setHighlight(win[1]);
