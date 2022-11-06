@@ -1,15 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useGameState, GameState, Players } from "../../hooks/useGameState";
-import Tile from "./tile";
+import { useGameState, GameState, Players } from "../hooks/useGameState";
+import Tile from "../components/TicTacToeTile";
 import {
   // getRandomDecision,
   symbols,
   getAiDecision,
   emptyTiles,
   calculateWinner,
-} from "./util";
+} from "../utils/tictactoe";
 
 const TicTacToe: NextPage = () => {
   const [currentGameState, updateGameState] = useGameState();

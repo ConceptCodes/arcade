@@ -1,4 +1,4 @@
-import { Players } from "../../hooks/useGameState";
+import { Players } from "../hooks/useGameState";
 
 export const symbols = {
   [Players.PLAYER]: "❌",
@@ -106,22 +106,6 @@ export function calculateWinner(tiles: string[]) {
   return null;
 }
 
-function winning(tiles: any[], player: Players) {
-  if (
-    (tiles[0] == player && tiles[1] == player && tiles[2] == player) ||
-    (tiles[3] == player && tiles[4] == player && tiles[5] == player) ||
-    (tiles[6] == player && tiles[7] == player && tiles[8] == player) ||
-    (tiles[0] == player && tiles[3] == player && tiles[6] == player) ||
-    (tiles[1] == player && tiles[4] == player && tiles[7] == player) ||
-    (tiles[2] == player && tiles[5] == player && tiles[8] == player) ||
-    (tiles[0] == player && tiles[4] == player && tiles[8] == player) ||
-    (tiles[2] == player && tiles[4] == player && tiles[6] == player)
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 export function getAiDecision(tiles: any[]) {
   //use minimax function to get the best move
