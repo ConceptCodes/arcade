@@ -6,10 +6,9 @@ import { TileColor } from "../utils/connectFour";
 import { useGameState, GameState } from "../hooks/useGameState";
 import { Players } from "../hooks/useGameState";
 import {
-  makeMove,
   getValidMoves,
-  isValidMove,
   shuffle,
+  calculateWinner,
   tiles
 } from "../utils/connectFour";
 import { toast } from 'react-toastify';
@@ -59,6 +58,10 @@ const ConnectFourPage: NextPage = () => {
   }
 
   useEffect(() => {
+    const winner = calculateWinner(board);
+    if (winner) {
+      crownWinner(winner === TileColor.YELLOW ? Players.YOU : Players.CPU);
+    }
     if (currentPlayer === Players.CPU) {
       const validMoves = getValidMoves(board);
       shuffle(validMoves);
