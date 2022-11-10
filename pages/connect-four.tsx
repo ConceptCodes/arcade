@@ -22,12 +22,15 @@ const ConnectFourPage: NextPage = () => {
   const [currentPlayer, setCurrentPlayer] = useState(Players.YOU);
   const [winner, crownWinner] = useState<Players>();
 
-  const rows = [];
-  for (let i = 0; i < COLS; i++) {
-    rows.push(Array.from(Array(ROWS), () => TileColor.WHITE));
+  function initBoard () {
+    const rows = [];
+    for (let i = 0; i < COLS; i++) {
+      rows.push(Array.from(Array(ROWS), () => TileColor.WHITE));
+    }
+    return rows;
   }
 
-  const [board, setBoard] = useState<TileColor[][]>(rows);
+  const [board, setBoard] = useState<TileColor[][]>(initBoard());
 
   function play(column: number): void {
     if (winner) return;
@@ -49,6 +52,12 @@ const ConnectFourPage: NextPage = () => {
     );
   }
 
+  function reset() {
+    setBoard(initBoard());
+    crownWinner(undefined);
+    setCurrentPlayer(Players.YOU);
+  }
+
   useEffect(() => {
     if (currentPlayer === Players.CPU) {
       const validMoves = getValidMoves(board);
@@ -66,7 +75,7 @@ const ConnectFourPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 space-y-4 text-center">
         <section className="">
           <h1 className="text-6xl font-bold pb-3">
             {winner && `Winner is ${winner === Players.YOU ? "🟡" : "🔴"}`}
@@ -81,6 +90,12 @@ const ConnectFourPage: NextPage = () => {
             </div>
           ))}
         </section>
+        <button
+          className="bg-blue-500 text-white rounded-lg p-3 w-[150px] text-lg"
+          onClick={() => reset()}
+        >
+          {winner ? "Play again" : "Reset"}
+        </button>
       </main>
     </div>
   );
