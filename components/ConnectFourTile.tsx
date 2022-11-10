@@ -6,21 +6,22 @@ interface TileProps {
 }
 
 const Tile: FC<TileProps> = ({ type }) => {
+  const style = 'flex border-2 bg-white text-4xl w-24 h-24 justify-center items-center hover:cursor-pointer'
   switch (type) {
     case TileColor.RED:
       return (
-        <div className="flex border-2 text-4xl w-24 h-24 justify-center items-center">
+        <div className={style}>
           🔴
         </div>
       );
     case TileColor.YELLOW:
       return (
-        <div className="flex border-2 text-4xl w-24 h-24 justify-center items-center">
+        <div className={style}>
           🟡
         </div>
       );
     case TileColor.WHITE:
-      return <div className="flex w-24 h-24 border-2 bg-white" />;
+      return <div className={style} />;
   }
 };
 

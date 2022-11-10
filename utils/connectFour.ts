@@ -1,9 +1,9 @@
 import { Players } from "../hooks/useGameState";
 
 export enum TileColor {
+  WHITE,
   RED,
   YELLOW,
-  WHITE,
 }
 
 export function calculateWinner(
@@ -118,4 +118,5 @@ export function makeMove(board: TileColor[][], col: number, player: Players) {
   }
   return [board, col];
 }
+
 

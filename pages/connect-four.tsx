@@ -10,7 +10,7 @@ import {
   getValidMoves,
   isValidMove,
   shuffle,
-  tiles,
+  tiles
 } from "../utils/connectFour";
 import { toast } from 'react-toastify';
 
@@ -49,8 +49,18 @@ const ConnectFourPage: NextPage = () => {
     );
   }
 
+  useEffect(() => {
+    if (currentPlayer === Players.CPU) {
+      const validMoves = getValidMoves(board);
+      shuffle(validMoves);
+      play(validMoves[0]);
+    }
+  }, [board]);
+
+  
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex min-h-screen flex-col bg-slate-200 items-center justify-center py-2">
       <Head>
         <title>Connect Four</title>
         <link rel="icon" href="/favicon.ico" />
@@ -62,7 +72,7 @@ const ConnectFourPage: NextPage = () => {
             {winner && `Winner is ${winner === Players.YOU ? "🟡" : "🔴"}`}
           </h1>
           {board.map((row, i) => (
-            <div className="flex" key={i}>
+            <div className="flex shadow-lg" key={i}>
               {row.map((tile, j) => (
                 <div key={j} onClick={() => play(j)}>
                   <Tile type={tile} />
