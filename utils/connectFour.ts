@@ -18,11 +18,17 @@ export const calculateWinner = (board: TileColor[][]) => {
         player === board[row][col + 2] &&
         player === board[row][col + 3]
       ) {
-        return player;
+        return [
+          player,[
+            [row, col],
+            [row, col + 1],
+            [row, col + 2],
+            [row, col + 3]
+          ]
+        ];
       }
     }
   }
-
   // check columns
   for (let row = 0; row < board.length - 3; row++) {
     for (let col = 0; col < board[row].length; col++) {
@@ -33,11 +39,18 @@ export const calculateWinner = (board: TileColor[][]) => {
         player === board[row + 2][col] &&
         player === board[row + 3][col]
       ) {
-        return player;
+        return [
+          player,
+          [
+            [row, col],
+            [row + 1, col],
+            [row + 2, col],
+            [row + 3, col],
+          ]
+        ];
       }
     }
   }
-
   // check diagonals
   for (let row = 0; row < board.length - 3; row++) {
     for (let col = 0; col < board[row].length - 3; col++) {
@@ -48,11 +61,18 @@ export const calculateWinner = (board: TileColor[][]) => {
         player === board[row + 2][col + 2] &&
         player === board[row + 3][col + 3]
       ) {
-        return player;
+        return [
+          player,
+          [
+            [row, col],
+            [row + 1, col + 1],
+            [row + 2, col + 2],
+            [row + 3, col + 3],
+          ]
+        ];
       }
     }
   }
-
   // check other diagonals
   for (let row = 0; row < board.length - 3; row++) {
     for (let col = board[row].length - 1; col > 2; col--) {
@@ -63,11 +83,18 @@ export const calculateWinner = (board: TileColor[][]) => {
         player === board[row + 2][col - 2] &&
         player === board[row + 3][col - 3]
       ) {
-        return player;
+        return [
+          player,
+          [
+            [row, col],
+            [row + 1, col - 1],
+            [row + 2, col - 2],
+            [row + 3, col - 3],
+          ]
+        ];
       }
     }
   }
-
   return TileColor.WHITE;
 };
 
