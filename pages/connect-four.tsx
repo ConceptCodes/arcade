@@ -3,17 +3,15 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Tile from '../components/ConnectFourTile';
 import { TileColor } from '../utils/connectFour';
-import { useGameState, GameState } from '../hooks/useGameState';
 import { Players } from '../hooks/useGameState';
 import {
   getValidMoves,
   shuffle,
   calculateWinner,
-  tiles
+  tiles,
+  minimax
 } from '../utils/connectFour';
 import { toast } from 'react-toastify';
-
-// TODO: make sure it does not error out when the column is full
 
 const ConnectFourPage: NextPage = () => {
   const COLS = 6;
@@ -36,13 +34,12 @@ const ConnectFourPage: NextPage = () => {
     if (winner) return;
     const emptyIndexes: number[] = [];
     board.forEach((row: any[], rowIndex: number) => {
-      if (row[column] === TileColor.WHITE) {
+      if (row[column] === TileColor.WHITE) 
         emptyIndexes.push(rowIndex);
-      }
     });
     const move = Math.max(...emptyIndexes) || 0;
     if (move < 0) {
-      toast.error('🙃 This column is full!');
+      toast.error('This column is full!');
       return;
     }
     board[move][column] = tiles[currentPlayer];
@@ -50,6 +47,13 @@ const ConnectFourPage: NextPage = () => {
     setCurrentPlayer(
       currentPlayer === Players.YOU ? Players.CPU : Players.YOU
     );
+  }
+
+  function AiPlay () {
+    const moves = getValidMoves(board);
+    const move = minimax(board, 1, true);
+    console.log(move)
+    // play(move);
   }
 
   function reset() {
@@ -60,15 +64,16 @@ const ConnectFourPage: NextPage = () => {
   }
 
   useEffect(() => {
-    const winner = calculateWinner(board);
+    const [winner, winningTiles] = calculateWinner(board);
     if (winner) {
-      crownWinner(winner[0] === TileColor.YELLOW ? Players.YOU : Players.CPU);
-      setHighlight(winner[1]);
+      crownWinner(winner === TileColor.YELLOW ? Players.YOU : Players.CPU);
+      setHighlight(winningTiles);
     }
     if (currentPlayer === Players.CPU) {
-      const validMoves = getValidMoves(board);
-      shuffle(validMoves);
-      play(validMoves[Math.floor(Math.random() * validMoves.length)]);
+      // const validMoves = getValidMoves(board);
+      // shuffle(validMoves);
+      // play(validMoves[Math.floor(Math.random() * validMoves.length)]);
+      AiPlay();
     }
   }, [board]);
 
@@ -85,7 +90,7 @@ const ConnectFourPage: NextPage = () => {
       }
       if (checker) return true;
   }
-  return false
+  return false;
 }
 
   return (

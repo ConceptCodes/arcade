@@ -4,10 +4,20 @@ export enum TileColor {
   WHITE,
   RED,
   YELLOW,
-}
+};
 
-// a function to calculate the winner of a connect four game
-export const calculateWinner = (board: TileColor[][]) => {
+export const tiles = {
+  [Players.CPU]: TileColor.RED,
+  [Players.YOU]: TileColor.YELLOW,
+};
+
+/**
+ * Calculates the winner of a connect four game.
+ * 
+ * @param board {TileColor[][]}
+ * @returns {[TileColor, [[number, number]]]} The winning player and the winning tiles
+ */
+export function calculateWinner(board: TileColor[][]) {
   // check rows
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[row].length - 3; col++) {
@@ -95,65 +105,78 @@ export const calculateWinner = (board: TileColor[][]) => {
       }
     }
   }
-  return TileColor.WHITE;
+  return [TileColor.WHITE, [[]]];
 };
-
-// a function to check if
-// returns the winner or null if there is no winner
-// return the index of the winning tile
-
-
 
 /**
  * check if the column is empty
+ * @param board {TileColor[][]} the game board
+ * @param col {number} the column to check
+ * @returns {boolean} true if the column is empty
  */
- export const isColumnValid = 
-    (board: number[][], column: number): boolean => {
+ export function isColumnValid(
+  board: number[][], 
+  column: number
+  ): boolean {
   if (board[0][column] == TileColor.WHITE) return true;
   return false;
-}
-
-// return all valid moves (empty columns) from the board
-export function getValidMoves(board: number[][]) {
-  let availableCols = [];
-  for (let i = 0; i < board[0].length; i++) {
-    if (isColumnValid(board, i)) availableCols.push(i);
-  }
-  return availableCols;
-}
-
-
-// #check if the played move is in empty column or not
-// export function isValidMove(col: number, board: number[][]) {
-//   for (let i = 0; i < board.length; i++) {
-//     if (board[i][col] === TileColor.WHITE) return true;
-//   }
-//   return false;
-// }
-
-/* Randomize array in-place using Durstenfeld shuffle algorithm */
-export function shuffle(array: number[]) {
-  for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-  }
-}
-
-export const tiles = {
-  [Players.CPU]: TileColor.RED,
-  [Players.YOU]: TileColor.YELLOW,
 };
 
-export function makeMove(board: TileColor[][], col: number, player: Players) {
-  let tmp = [...board];
-  for (let i = tmp.length - 1; i >= 0; i--) {
-    if (tmp[i][col] === TileColor.WHITE) {
-      tmp[i][col] = tiles[player];
-    }
+/**
+ * Check for columns that are not full
+ * 
+ * @param board {TileColor[][]}
+ * @returns {number[]} The columns that were not full
+ */
+export function getValidMoves(board: TileColor[][]) {
+  const availableCols = [];
+  for (let i = 0; i < board[0].length; i++) 
+    if (isColumnValid(board, i)) availableCols.push(i);
+  return availableCols;
+};
+
+/**
+ * Randomize array in-place using Durstenfeld shuffle algorithm
+ * 
+ * @param array {number[]}
+ */
+export function shuffle(array: number[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
   }
-  return [board, col];
+};
+
+export function minimax(board: TileColor[][], depth: number, isMaximizing: boolean) {
+  const [winner, _] = calculateWinner(board);
+  let bestCols;
+  if (winner !== TileColor.WHITE) {
+    return winner === TileColor.RED ? 1 : -1;
+  }
+  if (depth === 0) return 0;
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+    for (const col of getValidMoves(board)) {
+      const newBoard = [...board];
+      newBoard[0][col] = TileColor.RED;
+      const score = minimax(newBoard, depth - 1, false);
+      bestScore = Math.max(score, bestScore);
+    }
+    return bestScore;
+  } else {
+    let bestScore = Infinity;
+    for (const col of getValidMoves(board)) {
+      const newBoard = [...board];
+      newBoard[0][col] = TileColor.YELLOW;
+      const score = minimax(newBoard, depth - 1, true);
+      bestScore = Math.min(score, bestScore);
+    }
+    return bestScore;
+  }
 }
+
+
 
 
