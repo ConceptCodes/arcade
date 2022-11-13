@@ -43,9 +43,11 @@ const TicTacToe: NextPage = () => {
 
   async function cPUPlay() {
     if (winner || currentGameState === GameState.DRAW) return;
-    const nextMove = getAiDecision(tiles);
-    play(nextMove);
-    updateGameState(GameState.PLAYER_IS_NEXT);
+    setTimeout(() => {
+      const nextMove = getAiDecision(tiles);
+      play(nextMove);
+      updateGameState(GameState.PLAYER_IS_NEXT);
+    }, 600);
   }
 
   function play(move: number) {
