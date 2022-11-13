@@ -1,16 +1,14 @@
 import React from 'react';
 import Image from 'next/image'
-import { Players } from '../hooks/useGameState';
 import { 
   Piece, 
-  PIECES, 
+  WikiImages, 
 } from '../utils/chess';
 
 interface ITileProps {
   row: number;
   col: number;
   currentPiece: Piece;
-  player: Players;
   highlighted?: boolean;
 }
 
@@ -18,7 +16,6 @@ export const Tile: React.FC<ITileProps> = ({
   row, 
   col,
   currentPiece,
-  player,
   highlighted
 }) => {
   const size = 50;
@@ -31,12 +28,12 @@ export const Tile: React.FC<ITileProps> = ({
 
   return (
     <div className={main}>
-      {PIECES[currentPiece] !== PIECES.Empty ? (
+      {WikiImages[currentPiece] !== WikiImages.Empty ? (
       <Image 
         width={size} 
         height={size} 
         alt={currentPiece} 
-        src={PIECES[currentPiece][player === Players.CPU ? 'white' : 'black']} 
+        src={WikiImages[currentPiece]} 
       />
       ): <div className={main} /> }
     </div>

@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import { indexToPosition, allPossibleMoves } from "../utils/chess";
+import { indexToPosition, getAllMoves } from "../utils/chess";
 import { useChessBoard } from "../hooks/useChessBoard";
 import { Tile } from "../components/ChessTile";
 import { Players } from "../hooks/useGameState";
@@ -11,7 +11,7 @@ const ChessPage: NextPage = () => {
 
   React.useEffect(() => {
     if (selected) {
-      const possibleMoves = allPossibleMoves(board, selected);
+      const possibleMoves = getAllMoves(board, selected);
       setMoves(possibleMoves);
     }
   }, [selected]);
@@ -29,13 +29,13 @@ const ChessPage: NextPage = () => {
             {board.map((row, rowIndex) => (
               <div key={rowIndex} className="flex">
                 {row.map((tile, tileIndex) => (
-                  <div onClick={() => setSelected(indexToPosition([rowIndex, tileIndex]))}>
+                  <div 
+                    key={indexToPosition([rowIndex, tileIndex])}
+                    onClick={() => setSelected(indexToPosition([rowIndex, tileIndex]))}>
                     <Tile
-                      key={indexToPosition([rowIndex, tileIndex])}
                       row={rowIndex}
                       col={tileIndex}
                       currentPiece={tile}
-                      player={rowIndex > 3 ? Players.CPU : Players.YOU}
                       highlighted={moves && moves.includes(indexToPosition([rowIndex, tileIndex]))}
                     />
                   </div>
