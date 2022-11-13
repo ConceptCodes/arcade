@@ -10,13 +10,13 @@ const games = [
     color: 'bg-red-400',
     icon: '⏳'
   },
-  // {
-  //   title: 'Chess',
-  //   description: 'A simple game of tic tac toe',
-  //   link: '/chess', 
-  //   color: 'bg-purple-400',
-  //   icon: '♟'
-  // }
+  {
+    title: 'Chess',
+    description: 'A simple game of tic tac toe',
+    link: '/chess', 
+    color: 'bg-purple-400',
+    icon: '♟'
+  }
 ]
 
 const Home: NextPage = () => {
