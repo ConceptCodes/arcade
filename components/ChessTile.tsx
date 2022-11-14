@@ -22,7 +22,7 @@ export const Tile: React.FC<ITileProps> = ({
   
   const isBlack = (row + col) % 2 === 1;
   const style = `${isBlack ? 'bg-[#161625]' : 'bg-[#565695]'} flex items-center justify-center w-12 h-12 md:w-20 md:h-20 lg:w-24 lg:h-24`;
-  const highlightStyle = 'bg-[#FFD700]';
+  const highlightStyle =  currentPiece != Piece.EMPTY ? 'bg-emerald-500' : 'bg-[#FFD700] opacity-100';
 
   const main = `${style} ${highlighted ? highlightStyle : ''}`;
 

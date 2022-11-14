@@ -1,6 +1,4 @@
-import { Chess, Square } from 'chess.js';
-
-const chess = new Chess();
+import { chess } from '../hooks/useChessBoard';
 
 export enum Piece {
   WHITE_PAWN = 'White_Pawn',
@@ -22,6 +20,28 @@ export enum Piece {
   BLACK_KING = 'Black_King',
 
   EMPTY = 'Empty',
+}
+
+const chessJsMoves = {
+  [Piece.WHITE_PAWN]: 'P',
+  [Piece.BLACK_PAWN]: 'p',
+  
+  [Piece.WHITE_ROOK]: 'R',
+  [Piece.BLACK_ROOK]: 'r',
+
+  [Piece.WHITE_KNIGHT]: 'N',
+  [Piece.BLACK_KNIGHT]: 'n',
+
+  [Piece.WHITE_BISHOP]: 'B',
+  [Piece.BLACK_BISHOP]: 'b',
+
+  [Piece.WHITE_QUEEN]: 'Q',
+  [Piece.BLACK_QUEEN]: 'q',
+
+  [Piece.WHITE_KING]: 'K',
+  [Piece.BLACK_KING]: 'k',
+
+  [Piece.EMPTY]: '',
 }
 
 export const WikiImages = {
@@ -80,13 +100,7 @@ export const positionToIndex = (pos: string): [number, number] => {
   const rank = 8 - parseInt(pos[1]);
   return [rank, file];
 }
-
-// convert pgn move to algerabic notation
-export const pgnToPosition = (pgn: string): string  => {
-
-}
   
-
 /**
  * 
  * @param board {Piece[][]} the current board
@@ -96,28 +110,6 @@ export const pgnToPosition = (pgn: string): string  => {
 export const getPiece = (board: Piece[][], pos: string): Piece => {
   const [rank, file] = positionToIndex(pos);
   return board[rank][file];
-}
-
-const chessJsMoves = {
-  [Piece.WHITE_PAWN]: 'p',
-  [Piece.BLACK_PAWN]: 'P',
-  
-  [Piece.WHITE_ROOK]: 'r',
-  [Piece.BLACK_ROOK]: 'R',
-
-  [Piece.WHITE_KNIGHT]: 'n',
-  [Piece.BLACK_KNIGHT]: 'N',
-
-  [Piece.WHITE_BISHOP]: 'b',
-  [Piece.BLACK_BISHOP]: 'B',
-
-  [Piece.WHITE_QUEEN]: 'q',
-  [Piece.BLACK_QUEEN]: 'Q',
-
-  [Piece.WHITE_KING]: 'k',
-  [Piece.BLACK_KING]: 'K',
-
-  [Piece.EMPTY]: '',
 }
 
 export const getAllMoves = (board: Piece[][], pos: string): string[] => {

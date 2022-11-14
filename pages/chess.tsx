@@ -7,7 +7,7 @@ import { Tile } from "../components/ChessTile";
 import { Players } from "../hooks/useGameState";
 
 const ChessPage: NextPage = () => {
-  const { board, moves, setMoves, selected, setSelected } = useChessBoard();
+  const { board, moves, setMoves, selected, play } = useChessBoard();
 
   React.useEffect(() => {
     if (selected) {
@@ -31,7 +31,7 @@ const ChessPage: NextPage = () => {
                 {row.map((tile, tileIndex) => (
                   <div 
                     key={indexToPosition([rowIndex, tileIndex])}
-                    onClick={() => setSelected(indexToPosition([rowIndex, tileIndex]))}>
+                    onClick={() => play(tile, [rowIndex, tileIndex])}>
                     <Tile
                       row={rowIndex}
                       col={tileIndex}

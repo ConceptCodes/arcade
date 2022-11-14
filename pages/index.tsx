@@ -12,7 +12,7 @@ const games = [
   },
   {
     title: 'Chess',
-    description: 'A simple game of tic tac toe',
+    description: 'A simple game of chess',
     link: '/chess', 
     color: 'bg-purple-400',
     icon: '♟'
