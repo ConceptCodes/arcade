@@ -1,29 +1,40 @@
 import React from "react";
-import { defaultBoard, Piece, indexToPosition, positionToIndex, getPiece } from "../utils/chess";
+import { 
+  Piece, 
+  indexToPosition, 
+  positionToIndex, 
+  getPiece,
+  boardToGrid,
+  generateFen,
+} from "../utils/chess";
 import { Chess, Square } from 'chess.js';
 
-export const chess = new Chess();
+export const chessEngine = new Chess();
 
 export const useChessBoard = () => {
-  const [board, setBoard] = React.useState<Piece[][]>(defaultBoard);
+  const [board, setBoard] = React.useState<Piece[][]>();
   const [selected, setSelected] = React.useState<string | null>(null);
   const [moves, setMoves] = React.useState<string[]>();
+  const [isCheck, setIsCheck] = React.useState<boolean>(false);
+  
+  React.useEffect(() => {
+    chessEngine.load(generateFen());
+    setBoard(boardToGrid(chessEngine.board()));
+  }, []);
+
+  React.useEffect(() => {
+    setIsCheck(chessEngine.isCheck());
+  }, [board])
 
   function play(piece: Piece, index: [number, number]) {
     const position = indexToPosition(index);
     if (selected) {
-      chess.move({ from: selected, to: position });
-      const newBoard = board;
-      const oldIndex = positionToIndex(selected);
-
-      newBoard[index[0]][index[1]] = getPiece(board, selected);
-      newBoard[oldIndex[0]][oldIndex[1]] = Piece.EMPTY;
-      setBoard([...newBoard]);
-
+      chessEngine.move({ from: selected, to: position });
+      setBoard(boardToGrid(chessEngine.board()));
       setSelected(null);
       setMoves(undefined);
     } else {
-      const moves = chess.moves({ square: position as Square, verbose: true });
+      const moves = chessEngine.moves({ square: position as Square, verbose: true });
       if (moves.length > 0) {
         setSelected(position);
         setMoves(moves.map(x => x.to));
@@ -38,6 +49,7 @@ export const useChessBoard = () => {
     setSelected, 
     moves, 
     setMoves,
-    play 
+    play,
+    isCheck
   };
 }

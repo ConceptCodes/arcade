@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import { indexToPosition, getAllMoves } from "../utils/chess";
-import { useChessBoard } from "../hooks/useChessBoard";
+import { indexToPosition, getAllMoves, positionsWithMoves } from "../utils/chess";
+import { useChessBoard, chessEngine } from "../hooks/useChessBoard";
 import { Tile } from "../components/ChessTile";
 import { Players } from "../hooks/useGameState";
 
@@ -12,6 +12,8 @@ const ChessPage: NextPage = () => {
   React.useEffect(() => {
     if (selected) {
       const possibleMoves = getAllMoves(board, selected);
+      const positions = positionsWithMoves(board, 'White');
+      console.log('Pieces with moves: ', positions);
       setMoves(possibleMoves);
     }
   }, [selected]);
@@ -26,7 +28,7 @@ const ChessPage: NextPage = () => {
       <main className="flex bg-slate-200 flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <section className="border-2 shadow-lg">
           <div className="flex flex-col w-full">
-            {board.map((row, rowIndex) => (
+            {board && board.map((row, rowIndex) => (
               <div key={rowIndex} className="flex">
                 {row.map((tile, tileIndex) => (
                   <div 
