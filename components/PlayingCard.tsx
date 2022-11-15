@@ -12,7 +12,7 @@ export const PlayingCard: React.FC<IPlayingCard & IPlayingCardProps> = ({ suit, 
 
   if (flipped) return (
     <div className={style}>
-      <div className={`bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg w-[175px] h-[250px]`} />
+      <img src="/card-bg.png"  />
     </div>
   );
 

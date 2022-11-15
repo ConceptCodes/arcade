@@ -19,7 +19,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         pauseOnHover
         theme="light"
         />
-        {/* Same as */}
       <ToastContainer />
     </>
   )
