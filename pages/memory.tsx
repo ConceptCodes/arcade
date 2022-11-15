@@ -24,9 +24,11 @@ const Memory: NextPage = () => {
 
   React.useEffect(() => {
     if (!isPlaying) return;
-    if (attempts === 0) toast.error('You lost!');
+    if (attempts === 0) {
+      toast.error('You lost!');
+      reset();
+    }
 
-    setChosen(cards[Math.floor(Math.random() * cards.length)]);
     if (guess && chosen) {
       setAttempts(attempts - 1);
       if (guess.value === chosen.value && guess.suit === chosen.suit) {
@@ -52,6 +54,7 @@ const Memory: NextPage = () => {
       setTimeout(() => {
         setCards(cards.map((card) => ({ ...card, flipped: true })));
         setIsPlaying(true);
+        setChosen(cards[Math.floor(Math.random() * cards.length)]);
         resolve(true);
       }, 3000);
     });
