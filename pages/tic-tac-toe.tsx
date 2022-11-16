@@ -20,7 +20,7 @@ const TicTacToe: NextPage = () => {
   useEffect(() => {
     if (winner) {
       updateGameState(
-        winner === symbols[Players.PLAYER]
+        winner === symbols[Players.YOU]
           ? GameState.PLAYER_WINS
           : GameState.CPU_WINS
       );
@@ -52,7 +52,7 @@ const TicTacToe: NextPage = () => {
   function play(move: number) {
     if (winner || currentGameState === GameState.DRAW) return;
     tiles[move] = currentGameState === GameState.PLAYER_IS_NEXT
-      ? symbols[Players.PLAYER]
+      ? symbols[Players.YOU]
       : symbols[Players.CPU];
     updateBoard([...tiles]);
   }

@@ -6,12 +6,19 @@
     "start": "next start"
   },
   "dependencies": {
+    "chess.js": "^1.0.0-alpha.0",
     "next": "latest",
+    "next-redux-wrapper": "^8.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-toastify": "^9.1.1"
+    "react-redux": "^8.0.5",
+    "react-toastify": "^9.1.1",
+    "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
+    "@types/chess.js": "^0.13.4",
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
