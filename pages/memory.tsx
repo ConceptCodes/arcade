@@ -13,7 +13,6 @@ const Memory: NextPage = () => {
   const [guess, setGuess] = React.useState<IPlayingCard>();
   const [attempts, setAttempts] = React.useState<string[]>(["👨🏾", "👨🏾", "👨🏾"]);
 
-
   function reset() {
     setTimeout(() => setIsPlaying(true), 100);
     setScore(0);
@@ -22,7 +21,6 @@ const Memory: NextPage = () => {
     setAttempts(["👨🏾", "👨🏾", "👨🏾"]);
     setIsPlaying(false);
     const newCards = getRandomCards();
-    // newCards.forEach((card) => (card.flipped = true));
     setCards(newCards);
   }
 
@@ -48,7 +46,6 @@ const Memory: NextPage = () => {
       if (guess.value === chosen.value && guess.suit === chosen.suit) {
         setScore(score + 1);
         toast.success("Correct");
-        // flipping the card
         const index = cards.findIndex(
           (c) => c.value === guess.value && c.suit === guess.suit
         );
@@ -56,7 +53,6 @@ const Memory: NextPage = () => {
         newCards[index].flipped = false;
         setCards(newCards);
         setTimeout(() => {
-          // remove flipped card from deck to choose from
           const clean = newCards.filter((c) => c.flipped);
           console.log(clean);
           const _new = clean[Math.floor(Math.random() * clean.length)];
@@ -107,7 +103,7 @@ const Memory: NextPage = () => {
             />
           </div>
         )}
-        <section className="flex space-x-5 items-center space-y-5">
+        <section className="grid grid-cols-3 xl:grid-cols-5 gap-4">
           {cards.map((card, index) => (
             <div key={index} onClick={() => setGuess(card)}>
               <PlayingCard
