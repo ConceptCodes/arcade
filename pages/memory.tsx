@@ -11,28 +11,44 @@ const Memory: NextPage = () => {
   const [score, setScore] = React.useState<number>(0);
   const [chosen, setChosen] = React.useState<IPlayingCard>();
   const [guess, setGuess] = React.useState<IPlayingCard>();
-  const [attempts, setAttempts] = React.useState<string[]>(['👨🏾','👨🏾','👨🏾']);
+  const [attempts, setAttempts] = React.useState<string[]>(["👨🏾", "👨🏾", "👨🏾"]);
+
 
   function reset() {
     setTimeout(() => setIsPlaying(true), 100);
     setScore(0);
     setChosen(undefined);
     setGuess(undefined);
-    setAttempts(['👨🏾','👨🏾','👨🏾']);
+    setAttempts(["👨🏾", "👨🏾", "👨🏾"]);
     setIsPlaying(false);
+    const newCards = getRandomCards();
+    // newCards.forEach((card) => (card.flipped = true));
+    setCards(newCards);
   }
+
+  React.useEffect(() => {
+    if (
+      cards.every((card) => !card.flipped) &&
+      attempts.length > 0 &&
+      score > 0
+    ) {
+      toast.success("You won!");
+      reset();
+    }
+  }, [cards]);
 
   React.useEffect(() => {
     if (!isPlaying) return;
     if (attempts.length === 0) {
-      toast.error("You lost!");
       reset();
+      toast.error("You lost!");
     }
 
     if (guess && chosen) {
       if (guess.value === chosen.value && guess.suit === chosen.suit) {
         setScore(score + 1);
         toast.success("Correct");
+        // flipping the card
         const index = cards.findIndex(
           (c) => c.value === guess.value && c.suit === guess.suit
         );
@@ -40,8 +56,10 @@ const Memory: NextPage = () => {
         newCards[index].flipped = false;
         setCards(newCards);
         setTimeout(() => {
-          newCards[index].flipped = true;
-          const _new = cards[Math.floor(Math.random() * cards.length)]
+          // remove flipped card from deck to choose from
+          const clean = newCards.filter((c) => c.flipped);
+          console.log(clean);
+          const _new = clean[Math.floor(Math.random() * clean.length)];
           setChosen(_new);
         }, 500);
       } else {
@@ -64,7 +82,7 @@ const Memory: NextPage = () => {
     });
     toast.promise(resolveAfter3Sec, {
       pending: "Memorize the cards 👀",
-      success: "Let the games gegin 🎮",
+      success: "Let the games begin 🎮",
       error: "Something went wrong 🤯",
     });
   }
@@ -75,15 +93,12 @@ const Memory: NextPage = () => {
         <title>Memory</title>
       </Head>
       <main className="flex min-h-screen bg-slate-100 space-y-6 flex-col justify-center items-center">
-      <div className="flex justify-between w-1/2">
-        <div className="text-4xl font-bold">
-          {attempts}
+        <div className="flex justify-between w-1/2">
+          <div className="text-4xl font-bold">{attempts}</div>
+          <div className="text-2xl font-bold">Score: {score}</div>
         </div>
-        <div className="text-2xl font-bold">Score: {score}</div>
-      </div>
         {chosen && isPlaying && (
           <div className="flex justify-center items-center space-x-4">
-            <h1 className="text-4xl">Find this Card</h1>
             <PlayingCard
               size="sm"
               value={chosen.value}
@@ -94,9 +109,8 @@ const Memory: NextPage = () => {
         )}
         <section className="flex space-x-5 items-center space-y-5">
           {cards.map((card, index) => (
-            <div onClick={() => setGuess(card)}>
+            <div key={index} onClick={() => setGuess(card)}>
               <PlayingCard
-                key={index}
                 size="lg"
                 suit={card.suit}
                 value={card.value}
@@ -105,7 +119,7 @@ const Memory: NextPage = () => {
             </div>
           ))}
         </section>
-        { !chosen && (
+        {!chosen && (
           <button
             className="bg-purple-600 text-white rounded-lg p-3 w-[150px] text-lg"
             onClick={() => begin()}

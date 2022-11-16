@@ -48,14 +48,12 @@ for (const suit of Object.values(Suits)) {
 }
 
 // shuffle the deck
-
 export const getRandomCards = (): IPlayingCard[] => {
-  const cards: IPlayingCard[] = [];
-  for (let i = 0; i < 5; i++) {
-    const randomCard = deckOfCards[Math.floor(Math.random() * deckOfCards.length)];
-    cards.push(randomCard);
+  for (let i = deckOfCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deckOfCards[i], deckOfCards[j]] = [deckOfCards[j], deckOfCards[i]];
   }
-  return cards;
+  return deckOfCards.slice(0, 5);
 }
 
 
