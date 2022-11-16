@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useGameState, GameState, Players } from "../hooks/useGameState";
 import Tile from "../components/TicTacToeTile";
 import {
-  // getRandomDecision,
   symbols,
   getAiDecision,
   emptyTiles,
@@ -44,9 +43,11 @@ const TicTacToe: NextPage = () => {
 
   async function cPUPlay() {
     if (winner || currentGameState === GameState.DRAW) return;
-    const nextMove = getAiDecision(tiles);
-    play(nextMove);
-    updateGameState(GameState.PLAYER_IS_NEXT);
+    setTimeout(() => {
+      const nextMove = getAiDecision(tiles);
+      play(nextMove);
+      updateGameState(GameState.PLAYER_IS_NEXT);
+    }, 600);
   }
 
   function play(move: number) {
@@ -57,7 +58,6 @@ const TicTacToe: NextPage = () => {
     updateBoard([...tiles]);
   }
 
-  // TODO: add logic to check if game is a draw
   return (
     <div>
       <Head>
@@ -65,14 +65,14 @@ const TicTacToe: NextPage = () => {
       </Head>
       <main className="flex min-h-screen bg-slate-100 space-y-6 flex-col justify-center items-center">
         {winner && (
-          <h1 className="text-6xl pb-3">
+          <h1 className="text-6xl pb-3 font-medium">
             {winner === symbols[Players.CPU] ? "🤖" : "🙋🏾‍♂️"} won
           </h1>
         )}
         {
         (currentGameState === GameState.DRAW) && (
-          <h1 className="text-4xl pb-3 font-medium">
-            Draw!
+          <h1 className="text-6xl pb-3 font-medium">
+            😅 Draw
           </h1>
         )}
         <div className="grid grid-cols-3 gap-4">
