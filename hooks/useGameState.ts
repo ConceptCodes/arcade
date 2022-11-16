@@ -9,7 +9,7 @@ export enum GameState {
 }
 
 export enum Players {
-  PLAYER = 'YOU',
+  YOU = 'YOU',
   CPU = 'CPU',
 }
 

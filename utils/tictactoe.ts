@@ -1,7 +1,7 @@
 import { Players } from "../hooks/useGameState";
 
 export const symbols = {
-  [Players.PLAYER]: "❌",
+  [Players.YOU]: "❌",
   [Players.CPU]: "⭕",
 };
 
@@ -24,7 +24,7 @@ export async function getRandomDecision(tiles: any[]): Promise<any> {
 }
 
 const scores = {
-  [symbols[Players.PLAYER]]: -1,
+  [symbols[Players.YOU]]: -1,
   [symbols[Players.CPU]]: 1,
   draw: 0,
 };
@@ -48,7 +48,7 @@ export function minimax(
   for (let i = 0; i < empty.length; i++) {
     const index = empty[i];
     tiles[index] = symbols[player];
-    const score: any = minimax(tiles, player === Players.PLAYER ? Players.CPU : Players.PLAYER, depth + 1);
+    const score: any = minimax(tiles, player === Players.YOU ? Players.CPU : Players.YOU, depth + 1);
     tiles[index] = "";
     score.index = index;
     moves.push(score);
