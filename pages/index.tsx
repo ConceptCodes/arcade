@@ -11,12 +11,19 @@ const games = [
     icon: '⏳'
   },
   {
+    title: 'Memory',
+    description: 'A simple game of memory',
+    link: '/memory',
+    color: 'bg-blue-400',
+    icon: '🃏'
+  },
+  {
     title: 'Chess',
     description: 'A simple game of chess',
     link: '/chess', 
     color: 'bg-purple-400',
     icon: '♟'
-  }
+  },
 ]
 
 const Home: NextPage = () => {
