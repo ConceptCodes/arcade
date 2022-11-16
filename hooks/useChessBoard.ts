@@ -2,8 +2,6 @@ import React from "react";
 import { 
   Piece, 
   indexToPosition, 
-  positionToIndex, 
-  getPiece,
   boardToGrid,
   generateFen,
 } from "../utils/chess";
@@ -37,7 +35,7 @@ export const useChessBoard = () => {
       const moves = chessEngine.moves({ square: position as Square, verbose: true });
       if (moves.length > 0) {
         setSelected(position);
-        setMoves(moves.map(x => x.to));
+        setMoves(moves.map((x: any) => x.to));
       }
     }
   }
