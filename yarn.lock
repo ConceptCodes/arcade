@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@babel/runtime@^7.12.1", "@babel/runtime@^7.9.2":
+  version "7.20.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.1.tgz#1148bb33ab252b165a06698fde7576092a78b4a9"
+  integrity sha512-mrzLkl6U9YLF8qpqI7TB82PESyEGjm/0Ly91jG575eVxMMlb8fYfOXFZIJ8XfLrJZQbm7dlKry2bJmXBUEkdFg==
+  dependencies:
+    regenerator-runtime "^0.13.10"
+
 "@next/env@13.0.1":
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.0.1.tgz#0361e203c7bfbc7b69679ec48f7b45a8f4cb1c2c"
@@ -100,6 +107,19 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/chess.js@^0.13.4":
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/@types/chess.js/-/chess.js-0.13.4.tgz#6cb3ee550c74a5934fc7be55d89482833253727f"
+  integrity sha512-rPmTVffnepx/TVe9ZzOf8bXxyCkYQ+h+VTSiI4JKjoKWzCFkPgPRJL7Cz15qslksOcVGEYCPYLbG0NLO4yzbrg==
+
+"@types/hoist-non-react-statics@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/node@18.11.3":
   version "18.11.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.3.tgz#78a6d7ec962b596fc2d2ec102c4dd3ef073fea6a"
@@ -139,6 +159,11 @@
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
+
+"@types/use-sync-external-store@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz#b6725d5f4af24ace33b36fafd295136e75509f43"
+  integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
 
 acorn-node@^1.8.2:
   version "1.8.2"
@@ -215,6 +240,11 @@ caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.300014
   version "1.0.30001429"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001429.tgz#70cdae959096756a85713b36dd9cb82e62325639"
   integrity sha512-511ThLu1hF+5RRRt0zYCf2U2yRr9GPF6m5y90SBCWsvSoYoW7yAGlv/elyPaNfvGCkp6kj/KFZWU0BMA69Prsg==
+
+chess.js@^1.0.0-alpha.0:
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-1.0.0-alpha.0.tgz#3e476bdf58a908d93bddf879830860a9863147f6"
+  integrity sha512-nwEDlNEOZR/FaKW1DZLYtjgJrtAlxBW/6Fp4Hk8QXqpCCLrXweOU6/vKfJ/jNHT2gPqasxi0/ZPslcWAAdzozg==
 
 chokidar@^3.5.3:
   version "3.5.3"
@@ -351,6 +381,13 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
+
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
@@ -421,6 +458,11 @@ nanoid@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
   integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
+
+next-redux-wrapper@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-8.0.0.tgz#588f2d89146c60c77d4a40c0af7e5282acfe4773"
+  integrity sha512-zKRdpvDeqNXQr1j5DUWwsB2fz6XpHR32iy2qJGItTKLsbLB9GvtxDL9b4mFCfhDvnzy5dw97UqMjWDpFY8h0zA==
 
 next@latest:
   version "13.0.1"
@@ -568,6 +610,28 @@ react-dom@18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-is@^16.7.0:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^18.0.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
+  integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-redux@^8.0.5:
+  version "8.0.5"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.0.5.tgz#e5fb8331993a019b8aaf2e167a93d10af469c7bd"
+  integrity sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==
+  dependencies:
+    "@babel/runtime" "^7.12.1"
+    "@types/hoist-non-react-statics" "^3.3.1"
+    "@types/use-sync-external-store" "^0.0.3"
+    hoist-non-react-statics "^3.3.2"
+    react-is "^18.0.0"
+    use-sync-external-store "^1.0.0"
+
 react-toastify@^9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.1.1.tgz#9280caea4a13dc1739c350d90660a630807bf10b"
@@ -595,6 +659,28 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+redux-devtools-extension@^2.13.9:
+  version "2.13.9"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz#6b764e8028b507adcb75a1cae790f71e6be08ae7"
+  integrity sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A==
+
+redux-thunk@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.4.2.tgz#b9d05d11994b99f7a91ea223e8b04cf0afa5ef3b"
+  integrity sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==
+
+redux@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.0.tgz#46f10d6e29b6666df758780437651eeb2b969f13"
+  integrity sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+
+regenerator-runtime@^0.13.10:
+  version "0.13.10"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.10.tgz#ed07b19616bcbec5da6274ebc75ae95634bfc2ee"
+  integrity sha512-KepLsg4dU12hryUO7bp/axHAKvwGOCV0sGloQtpagJ12ai+ojVDqkeGSiRX1zlq+kjIMZ1t7gpze+26QqtdGqw==
 
 resolve@^1.1.7, resolve@^1.22.1:
   version "1.22.1"
@@ -695,7 +781,7 @@ update-browserslist-db@^1.0.9:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-use-sync-external-store@1.2.0:
+use-sync-external-store@1.2.0, use-sync-external-store@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==

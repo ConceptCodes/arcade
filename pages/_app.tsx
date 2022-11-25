@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <ToastContainer
         position="top-right"
-        autoClose={2000}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -19,10 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         pauseOnHover
         theme="light"
         />
-        {/* Same as */}
       <ToastContainer />
     </>
-  );
+  )
 }
 
-export default MyApp
+export default MyApp;
