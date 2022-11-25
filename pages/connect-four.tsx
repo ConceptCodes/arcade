@@ -67,11 +67,14 @@ const ConnectFourPage: NextPage = () => {
     if (winner) {
       crownWinner(winner === TileColor.YELLOW ? Players.YOU : Players.CPU);
       setHighlight(winningTiles);
+      return;
     }
     if (currentPlayer === Players.CPU) {
       const validMoves = getValidMoves(board);
       shuffle(validMoves);
-      play(validMoves[Math.floor(Math.random() * validMoves.length)]);
+      setTimeout(() => {
+        play(validMoves[Math.floor(Math.random() * validMoves.length)]);
+      }, 600);
       // AiPlay();
     }
   }, [board]);
