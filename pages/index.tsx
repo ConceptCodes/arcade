@@ -12,7 +12,7 @@ interface IGames {
 
 const games: IGames[] = [];
 
-games.push(  {
+games.push({
   title: 'Tic Tac Toe',
   description: 'A simple game of tic tac toe',
   link: '/tic-tac-toe',
@@ -20,7 +20,7 @@ games.push(  {
   icon: '⏳'
 });
 
-games.push(  {
+games.push({
   title: 'Memory',
   description: 'A simple game of memory',
   link: '/memory',
@@ -35,6 +35,14 @@ games.push({
   color: 'bg-purple-400',
   icon: '♟'
 });
+
+games.push({
+  title: 'Connect 4',
+  description: 'A simple game of connect 4',
+  link: '/connect-four',
+  color: 'bg-yellow-400',
+  icon: '🔴'
+})
 
 const Home: NextPage = () => {
   const highlight = 'text-yellow-300';

@@ -149,33 +149,13 @@ export function shuffle(array: number[]) {
   }
 };
 
-export function minimax(board: TileColor[][], depth: number, isMaximizing: boolean) {
-  const [winner, _] = calculateWinner(board);
-  let bestCols;
-  if (winner !== TileColor.WHITE) {
-    return winner === TileColor.RED ? 1 : -1;
-  }
-  if (depth === 0) return 0;
-  if (isMaximizing) {
-    let bestScore = -Infinity;
-    for (const col of getValidMoves(board)) {
-      const newBoard = [...board];
-      newBoard[0][col] = TileColor.RED;
-      const score = minimax(newBoard, depth - 1, false);
-      bestScore = Math.max(score, bestScore);
-    }
-    return bestScore;
-  } else {
-    let bestScore = Infinity;
-    for (const col of getValidMoves(board)) {
-      const newBoard = [...board];
-      newBoard[0][col] = TileColor.YELLOW;
-      const score = minimax(newBoard, depth - 1, true);
-      bestScore = Math.min(score, bestScore);
-    }
-    return bestScore;
-  }
-}
+const scores = {
+  [tiles[Players.YOU]]: -1,
+  [tiles[Players.CPU]]: 1,
+  draw: 0,
+};
+
+
 
 
 

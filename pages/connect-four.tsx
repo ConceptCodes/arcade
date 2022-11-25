@@ -9,7 +9,7 @@ import {
   shuffle,
   calculateWinner,
   tiles,
-  minimax
+  // minimax
 } from '../utils/connectFour';
 import { toast } from 'react-toastify';
 
@@ -51,8 +51,7 @@ const ConnectFourPage: NextPage = () => {
 
   function AiPlay () {
     const moves = getValidMoves(board);
-    const move = minimax(board, 1, true);
-    console.log(move)
+    console.log(moves)
     // play(move);
   }
 
@@ -70,10 +69,10 @@ const ConnectFourPage: NextPage = () => {
       setHighlight(winningTiles);
     }
     if (currentPlayer === Players.CPU) {
-      // const validMoves = getValidMoves(board);
-      // shuffle(validMoves);
-      // play(validMoves[Math.floor(Math.random() * validMoves.length)]);
-      AiPlay();
+      const validMoves = getValidMoves(board);
+      shuffle(validMoves);
+      play(validMoves[Math.floor(Math.random() * validMoves.length)]);
+      // AiPlay();
     }
   }, [board]);
 

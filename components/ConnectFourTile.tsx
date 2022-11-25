@@ -7,8 +7,8 @@ interface TileProps {
 }
 
 const Tile: FC<TileProps> = ({ type, highlight }) => {
-  const style = 'flex border-2 p-3 bg-white text-4xl w-24 h-24 justify-center items-center hover:cursor-pointer';
-  const highlightStyle = highlight ? 'border-6 border-blue-500' : '';
+  const style = 'flex border-2 p-3 text-4xl w-24 h-24 justify-center items-center hover:cursor-pointer';
+  const highlightStyle = highlight ? ' bg-green-400' : ' bg-white';
   switch (type) {
     case TileColor.RED:
       return (
