@@ -50,9 +50,10 @@ const Wordle: NextPage = () => {
       }
     });
     setTiles([...tiles]);
+    setChoice("");
     if (tiles[currentRow].every((tile) => tile.correctSpot)) {
       toast.success(
-        `Congratulations, You guessed correctly in ${currentRow} tries!`
+        `Congratulations, You guessed correctly in ${currentRow+1} tries!`
       );
     } else {
       setCurrentRow(currentRow + 1);
@@ -69,12 +70,11 @@ const Wordle: NextPage = () => {
     });
       setTiles([...tiles]);
     }
-
-    if (currentRow === tiles.length) {
+    if (currentRow === 5) {
       toast.error(`You have exceeded the number of tries! Correct word was ${wordOfTheDay}`);
       setTimeout(() => {
         window.location.reload();
-      }, 1500);
+      }, 2500);
     }
   }, [currentRow]);
 
@@ -101,8 +101,6 @@ const Wordle: NextPage = () => {
     setTiles(newTiles);
   }, []);
 
-  // when a user enters a new word, find the score for the selected row
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -116,6 +114,7 @@ const Wordle: NextPage = () => {
             type="text"
             className="h-10 p-3 w-96 rounded-lg border-2 border-black"
             maxLength={5}
+            value={choice}
             onChange={(e) => setChoice(e.target.value)}
           ></input>
           <button
