@@ -13,7 +13,7 @@ const Tile: React.FC<ITile> = ({
   presentInWord,
 }) => {
 
-  const mainStyle = 'flex items-center text-white justify-center w-16 h-16 text-2xl font-bold border-2 border rounded-lg ';
+  const mainStyle = 'flex items-center text-white justify-center md:w-24 md:h-24 shadow-lg xl:w-32 xl:h-32 text-4xl font-bold border-2 border rounded-lg ';
 
   const highlight = () => {
     if (correctSpot) return 'bg-green-400';

@@ -112,14 +112,16 @@ const Wordle: NextPage = () => {
         <div className="flex items-center space-x-3">
           <input
             type="text"
-            className="h-10 p-3 w-96 rounded-lg border-2 border-black"
+            className="h-10 p-3 w-96 shadow-lg rounded-lg border-2 border-black"
             maxLength={5}
+            minLength={5}
             value={choice}
             onChange={(e) => setChoice(e.target.value)}
           ></input>
           <button
-            className="p-2 rounded-lg bg-blue-400 text-white"
+            className="p-2 rounded-lg bg-black font-bold text-white"
             onClick={() => getScore()}
+            disabled={choice.length !== 5}
           >
             Submit
           </button>
