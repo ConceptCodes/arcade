@@ -42,6 +42,14 @@ games.push({
   link: '/connect-four',
   color: 'bg-yellow-400',
   icon: '🔴'
+});
+
+games.push({
+  title: 'Wordle',
+  description: 'A simple game of wordle',
+  link: '/wordle',
+  color: 'bg-green-400',
+  icon: '🔠'
 })
 
 const Home: NextPage = () => {
