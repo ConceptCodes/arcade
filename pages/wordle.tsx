@@ -4,6 +4,7 @@ import Tile from "../components/WordleTile";
 import { useState, useEffect } from "react";
 import { ITile } from "../components/WordleTile";
 import { toast } from "react-toastify";
+import crypto from "crypto-js";
 
 const Wordle: NextPage = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState<string>("");
@@ -11,29 +12,20 @@ const Wordle: NextPage = () => {
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [choice, setChoice] = useState<string>("");
 
-  const getRandomWord = () => {
-    return fetch(
-      "https://raw.githubusercontent.com/tabatkins/wordle-list/main/words"
-    )
-      .then((response) => response.text())
-      .then((data) => {
-        const words = data.split("\n");
-        const randomWord = words[Math.floor(Math.random() * words.length)];
-        return randomWord;
-      });
-  };
-
   const getScore = () => {
+    const _choice = crypto.AES.decrypt(wordOfTheDay, process.env.NEXT_PUBLIC_SECRET_KEY as string).toString(
+      crypto.enc.Utf8
+    );
     tiles[currentRow].forEach((_, index: number) => {
       const letter = choice[index];
-      if (letter === wordOfTheDay[index]) {
+      if (letter === _choice[index]) {
         tiles[currentRow][index] = {
           letter,
           correctSpot: true,
           presentInWord: true,
           selected: false,
         };
-      } else if (wordOfTheDay.includes(letter)) {
+      } else if (_choice.includes(letter)) {
         tiles[currentRow][index] = {
           letter,
           correctSpot: false,
@@ -50,11 +42,11 @@ const Wordle: NextPage = () => {
       }
     });
     setTiles([...tiles]);
-    setChoice("");
     if (tiles[currentRow].every((tile) => tile.correctSpot)) {
       toast.success(
-        `Congratulations, You guessed correctly in ${currentRow+1} tries!`
+        `Congratulations, You guessed correctly in ${currentRow + 1} tries!`
       );
+      setChoice("");
     } else {
       setCurrentRow(currentRow + 1);
     }
@@ -62,16 +54,18 @@ const Wordle: NextPage = () => {
 
   useEffect(() => {
     if (currentRow < tiles.length) {
-    tiles[currentRow] = Array(5).fill({
-      letter: "",
-      correctSpot: false,
-      selected: true,
-      presentInWord: false,
-    });
+      tiles[currentRow] = Array(5).fill({
+        letter: "",
+        correctSpot: false,
+        selected: true,
+        presentInWord: false,
+      });
       setTiles([...tiles]);
     }
     if (currentRow === 5) {
-      toast.error(`You have exceeded the number of tries! Correct word was ${wordOfTheDay}`);
+      toast.error(
+        `You have exceeded the number of tries! Correct word was ${wordOfTheDay}`
+      );
       setTimeout(() => {
         window.location.reload();
       }, 2500);
@@ -80,7 +74,19 @@ const Wordle: NextPage = () => {
 
   useEffect(() => {
     (async () => {
-      setWordOfTheDay(await getRandomWord());
+      fetch(
+        "https://raw.githubusercontent.com/tabatkins/wordle-list/main/words"
+      )
+        .then((response) => response.text())
+        .then((data) => {
+          const words = data.split("\n");
+          const randomWord = words[Math.floor(Math.random() * words.length)];
+          const hash = crypto.AES.encrypt(
+            randomWord,
+            process.env.NEXT_PUBLIC_SECRET_KEY as string
+          ).toString();
+          setWordOfTheDay(hash);
+        });
     })();
 
     const newTiles = Array(5).fill(
