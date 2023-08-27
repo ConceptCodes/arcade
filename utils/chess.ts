@@ -1,4 +1,3 @@
-import { title } from "process";
 import { chessEngine } from "../hooks/useChessBoard";
 import { Square, Move } from 'chess.js'
 

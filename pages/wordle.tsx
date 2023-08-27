@@ -4,7 +4,6 @@ import Tile from "../components/WordleTile";
 import { useState, useEffect } from "react";
 import { ITile } from "../components/WordleTile";
 import { toast } from "react-toastify";
-import crypto from "crypto-js";
 
 const Wordle: NextPage = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState<string>("");
@@ -13,34 +12,10 @@ const Wordle: NextPage = () => {
   const [choice, setChoice] = useState<string>("");
 
   const getScore = () => {
-    const _choice = crypto.AES.decrypt(wordOfTheDay, process.env.NEXT_PUBLIC_SECRET_KEY as string).toString(
-      crypto.enc.Utf8
-    );
-    tiles[currentRow].forEach((_, index: number) => {
-      const letter = choice[index];
-      if (letter === _choice[index]) {
-        tiles[currentRow][index] = {
-          letter,
-          correctSpot: true,
-          presentInWord: true,
-          selected: false,
-        };
-      } else if (_choice.includes(letter)) {
-        tiles[currentRow][index] = {
-          letter,
-          correctSpot: false,
-          presentInWord: true,
-          selected: false,
-        };
-      } else {
-        tiles[currentRow][index] = {
-          letter,
-          correctSpot: false,
-          presentInWord: false,
-          selected: false,
-        };
-      }
-    });
+    tiles[currentRow] = "result from apis"
+    tiles[currentRow]
+
+
     setTiles([...tiles]);
     if (tiles[currentRow].every((tile) => tile.correctSpot)) {
       toast.success(
@@ -73,22 +48,12 @@ const Wordle: NextPage = () => {
   }, [currentRow]);
 
   useEffect(() => {
-    (async () => {
-      fetch(
-        "https://raw.githubusercontent.com/tabatkins/wordle-list/main/words"
-      )
-        .then((response) => response.text())
-        .then((data) => {
-          const words = data.split("\n");
-          const randomWord = words[Math.floor(Math.random() * words.length)];
-          const hash = crypto.AES.encrypt(
-            randomWord,
-            process.env.NEXT_PUBLIC_SECRET_KEY as string
-          ).toString();
-          setWordOfTheDay(hash);
-        });
-    })();
-
+    fetch("/api/wordle")
+      .then((res) => res.json())
+      .then((data) => {
+        // setWordOfTheDay(data.data);
+        console.log(data)
+      });
     const newTiles = Array(5).fill(
       new Array(5).fill({
         letter: "",
@@ -97,7 +62,6 @@ const Wordle: NextPage = () => {
         presentInWord: false,
       })
     );
-
     newTiles[currentRow] = Array(5).fill({
       letter: "",
       correctSpot: false,

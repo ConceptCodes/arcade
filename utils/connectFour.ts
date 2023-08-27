@@ -4,7 +4,7 @@ export enum TileColor {
   WHITE,
   RED,
   YELLOW,
-};
+}
 
 export const tiles = {
   [Players.CPU]: TileColor.RED,
@@ -13,7 +13,7 @@ export const tiles = {
 
 /**
  * Calculates the winner of a connect four game.
- * 
+ *
  * @param board {TileColor[][]}
  * @returns {[TileColor, [[number, number]]]} The winning player and the winning tiles
  */
@@ -29,12 +29,13 @@ export function calculateWinner(board: TileColor[][]) {
         player === board[row][col + 3]
       ) {
         return [
-          player,[
+          player,
+          [
             [row, col],
             [row, col + 1],
             [row, col + 2],
-            [row, col + 3]
-          ]
+            [row, col + 3],
+          ],
         ];
       }
     }
@@ -56,7 +57,7 @@ export function calculateWinner(board: TileColor[][]) {
             [row + 1, col],
             [row + 2, col],
             [row + 3, col],
-          ]
+          ],
         ];
       }
     }
@@ -78,7 +79,7 @@ export function calculateWinner(board: TileColor[][]) {
             [row + 1, col + 1],
             [row + 2, col + 2],
             [row + 3, col + 3],
-          ]
+          ],
         ];
       }
     }
@@ -100,13 +101,13 @@ export function calculateWinner(board: TileColor[][]) {
             [row + 1, col - 1],
             [row + 2, col - 2],
             [row + 3, col - 3],
-          ]
+          ],
         ];
       }
     }
   }
   return [TileColor.WHITE, [[]]];
-};
+}
 
 /**
  * check if the column is empty
@@ -114,30 +115,27 @@ export function calculateWinner(board: TileColor[][]) {
  * @param col {number} the column to check
  * @returns {boolean} true if the column is empty
  */
- export function isColumnValid(
-  board: number[][], 
-  column: number
-  ): boolean {
+export function isColumnValid(board: number[][], column: number): boolean {
   if (board[0][column] == TileColor.WHITE) return true;
   return false;
-};
+}
 
 /**
  * Check for columns that are not full
- * 
+ *
  * @param board {TileColor[][]}
  * @returns {number[]} The columns that were not full
  */
 export function getValidMoves(board: TileColor[][]) {
   const availableCols = [];
-  for (let i = 0; i < board[0].length; i++) 
+  for (let i = 0; i < board[0].length; i++)
     if (isColumnValid(board, i)) availableCols.push(i);
   return availableCols;
-};
+}
 
 /**
  * Randomize array in-place using Durstenfeld shuffle algorithm
- * 
+ *
  * @param array {number[]}
  */
 export function shuffle(array: number[]) {
@@ -147,7 +145,7 @@ export function shuffle(array: number[]) {
     array[i] = array[j];
     array[j] = temp;
   }
-};
+}
 
 const scores = {
   [tiles[Players.YOU]]: -1,
@@ -155,8 +153,48 @@ const scores = {
   draw: 0,
 };
 
+export function minimax(
+  board: TileColor[][],
+  depth: number,
+  isMaximizing: boolean,
+  alpha: number,
+  beta: number
+) {
+  const [winner, _] = calculateWinner(board);
+  if (winner !== TileColor.WHITE) return scores[winner];
+  if (depth === 0) return 0;
 
+  const validMoves = getValidMoves(board);
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+    for (let i = 0; i < validMoves.length; i++) {
+      const col = validMoves[i];
+      const newBoard = board.map((row) => row.slice());
+      newBoard[getFirstEmptyRow(board, col)][col] = tiles[Players.CPU];
+      const score = minimax(newBoard, depth - 1, false, alpha, beta);
+      bestScore = Math.max(bestScore, score);
+      alpha = Math.max(alpha, score);
+      if (beta <= alpha) break;
+    }
+    return bestScore;
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < validMoves.length; i++) {
+      const col = validMoves[i];
+      const newBoard = board.map((row) => row.slice());
+      newBoard[getFirstEmptyRow(board, col)][col] = tiles[Players.YOU];
+      const score = minimax(newBoard, depth - 1, true, alpha, beta);
+      bestScore = Math.min(bestScore, score);
+      beta = Math.min(beta, score);
+      if (beta <= alpha) break;
+    }
+    return bestScore;
+  }
+}
 
-
-
-
+function getFirstEmptyRow(board: TileColor[][], col: number) {
+  for (let row = board.length - 1; row >= 0; row--) {
+    if (board[row][col] === TileColor.WHITE) return row;
+  }
+  return -1;
+}

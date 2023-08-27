@@ -1,114 +1,78 @@
-import { Players } from "../hooks/useGameState";
+import Game, { Board, Players, Position, Symbol } from "./game";
 
-export const symbols = {
-  [Players.YOU]: "❌",
-  [Players.CPU]: "⭕",
-};
-
-export const emptyTiles = (tiles: any[]) => {
-  const empty: number[] = [];
-  tiles.forEach((tile, index) => {
-    if (tile === "") empty.push(index);
-  });
-  return empty;
-}
-
-export async function getRandomDecision(tiles: any[]): Promise<any> {
-  const empty: any[] = emptyTiles(tiles);
-  const randomIndex = Math.floor(Math.random() * empty.length);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(empty[randomIndex]);
-    }, 700);
-  });
-}
-
-const scores = {
-  [symbols[Players.YOU]]: -1,
-  [symbols[Players.CPU]]: 1,
-  draw: 0,
-};
-
-export function minimax(
-  tiles: string[],
-  player: Players,
-  depth: number = 0
-) {
-  const winner: any = calculateWinner(tiles);
-  if (winner) {
-    return { score: scores[winner[0]], index: -1 };
+export default class TicTacToe extends Game {
+  constructor(board: Board, symbols: Symbol) {
+    super(board, symbols);
   }
 
-  const empty = emptyTiles(tiles);
-  if (empty.length === 0) {
-    return { score: scores.draw, index: -1 };
-  }
+  calculateWinner() {
+    const possibleLines: Position[][] = [
+      [
+        [0, 0],
+        [0, 1],
+        [0, 2],
+      ],
+      [
+        [1, 0],
+        [1, 1],
+        [1, 2],
+      ],
+      [
+        [2, 0],
+        [2, 1],
+        [2, 2],
+      ],
+      [
+        [0, 0],
+        [1, 0],
+        [2, 0],
+      ],
+      [
+        [0, 1],
+        [1, 1],
+        [2, 1],
+      ],
+      [
+        [0, 2],
+        [1, 2],
+        [2, 2],
+      ],
+      [
+        [0, 0],
+        [1, 1],
+        [2, 2],
+      ],
+      [
+        [0, 2],
+        [1, 1],
+        [2, 0],
+      ],
+    ];
 
-  const moves: any[] = [];
-  for (let i = 0; i < empty.length; i++) {
-    const index = empty[i];
-    tiles[index] = symbols[player];
-    const score: any = minimax(tiles, player === Players.YOU ? Players.CPU : Players.YOU, depth + 1);
-    tiles[index] = "";
-    score.index = index;
-    moves.push(score);
-  }
-
-  let bestMove: any;
-  if (player === Players.CPU) {
-    let bestScore = -Infinity;
-    for (let i = 0; i < moves.length; i++) {
-      if (moves[i].score > bestScore) {
-        bestScore = moves[i].score;
-        bestMove = moves[i];
-      }
+    for (let i = 0; i < possibleLines.length; i++) {
+      const [a, b, c] = possibleLines[i];
+      if (
+        this.board[a[0]][a[1]] &&
+        this.board[a[0]][a[1]] === this.board[b[0]][b[1]] &&
+        this.board[a[0]][a[1]] === this.board[c[0]][c[1]]
+      )
+        return this.board[a[0]][a[1]] as Players;
     }
-  } else {
-    let bestScore = Infinity;
-    for (let i = 0; i < moves.length; i++) {
-      if (moves[i].score < bestScore) {
-        bestScore = moves[i].score;
-        bestMove = moves[i];
-      }
-    }
+    return null;
   }
-  return bestMove;
-}
 
-
-// this should return
-// GameState.PLAYER_HAS_WON or
-// GameState.CPU_HAS_WON or
-// GameState.DRAW or
-// null
-/**
- * 
- * @param tiles {string[]} the current state of the game
- * @returns {[winner, winningTiles]} a tuple of the winner and the winning tiles 
- */
-export function calculateWinner(tiles: string[]) {
-  const possibleLines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  // go over all possibly winning lines and check if they consist of only X's/only O's
-  for (let i = 0; i < possibleLines.length; i++) {
-    const [a, b, c] = possibleLines[i];
-    if (tiles[a] && tiles[a] === tiles[b] && tiles[a] === tiles[c])
-      return [tiles[a], possibleLines[i]];
+  makeMove(position: Position): void {
+    const [row, col] = position;
+    this.board[row][col] = this.symbols[this.currentPlayer];
+    this.togglePlayer();
   }
-  return null;
-}
 
+  isGameOver(): boolean {
+    return this.calculateWinner() !== null;
+  }
 
-export function getAiDecision(tiles: any[]) {
-  //use minimax function to get the best move
-  const bestMove: any = minimax(tiles, Players.CPU);
-  return bestMove.index;
+  aiMove(): Position {
+    console.log("AI is thinking...");
+    return this.minimax(this.board, this.currentPlayer).move;
+  }
 }

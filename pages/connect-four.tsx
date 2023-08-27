@@ -6,11 +6,10 @@ import { TileColor } from '../utils/connectFour';
 import { Players } from '../hooks/useGameState';
 import {
   getValidMoves,
-  shuffle,
   calculateWinner,
   tiles,
-  // minimax
 } from '../utils/connectFour';
+import { MoveParserResponseType, playConnectFour } from "../hooks/useAi";
 import { toast } from 'react-toastify';
 
 const ConnectFourPage: NextPage = () => {
@@ -19,8 +18,9 @@ const ConnectFourPage: NextPage = () => {
   const [currentPlayer, setCurrentPlayer] = useState(Players.YOU);
   const [winner, crownWinner] = useState<Players>();
   const [highlight, setHighlight] = useState<number[][] | any>();
+  const [results, setResults] = useState<MoveParserResponseType[]>([]);
 
-  function initBoard () {
+  function initBoard() {
     const rows = [];
     for (let i = 0; i < COLS; i++) {
       rows.push(Array.from(Array(ROWS), () => TileColor.WHITE));
@@ -30,13 +30,18 @@ const ConnectFourPage: NextPage = () => {
 
   const [board, setBoard] = useState<TileColor[][]>(initBoard());
 
+  const strinfyBoard = (board: TileColor[][]) => {
+    return board.map((row) => row.join(' ')).join('\n');
+  }
+
   function play(column: number): void {
     if (winner) return;
     const emptyIndexes: number[] = [];
-    board.forEach((row: any[], rowIndex: number) => {
-      if (row[column] === TileColor.WHITE) 
+    board.forEach((row: TileColor[], rowIndex: number) => {
+      if (row[column] === TileColor.WHITE)
         emptyIndexes.push(rowIndex);
     });
+    console.log('Empty indexes:', emptyIndexes);
     const move = Math.max(...emptyIndexes) || 0;
     if (move < 0) {
       toast.error('This column is full!');
@@ -49,10 +54,10 @@ const ConnectFourPage: NextPage = () => {
     );
   }
 
-  function AiPlay () {
-    const moves = getValidMoves(board);
-    console.log(moves)
-    // play(move);
+  async function AiPlay() {
+    const result = await playConnectFour(strinfyBoard(board), '1');
+    play(result.column);
+    setResults([...results, result]);
   }
 
   function reset() {
@@ -60,6 +65,7 @@ const ConnectFourPage: NextPage = () => {
     crownWinner(undefined);
     setCurrentPlayer(Players.YOU);
     setHighlight([]);
+    setResults([]);
   }
 
   useEffect(() => {
@@ -69,14 +75,7 @@ const ConnectFourPage: NextPage = () => {
       setHighlight(winningTiles);
       return;
     }
-    if (currentPlayer === Players.CPU) {
-      const validMoves = getValidMoves(board);
-      shuffle(validMoves);
-      setTimeout(() => {
-        play(validMoves[Math.floor(Math.random() * validMoves.length)]);
-      }, 600);
-      // AiPlay();
-    }
+    if (currentPlayer === Players.CPU && !winner) AiPlay();
   }, [board]);
 
   function shouldHighlight(arr: number[]) {
@@ -91,38 +90,58 @@ const ConnectFourPage: NextPage = () => {
         }
       }
       if (checker) return true;
+    }
+    return false;
   }
-  return false;
-}
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-200 items-center justify-center py-2">
+    <div className="flex min-h-screen flex-col bg-slate-200 justify-center py-2">
       <Head>
         <title>Connect Four</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 space-y-4 text-center">
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 space-y-4">
         <section className="">
           <h1 className="text-6xl font-bold pb-3">
             {
               winner && `Winner is ${winner === Players.YOU ? '🟡' : '🔴'}`
             }
+            {
+              !winner && currentPlayer === Players.YOU ? 'Your turn' : 
+                'AI is thinking...'
+            }
           </h1>
-          {board.map((row, i) => (
-            <div className="flex shadow-lg" key={i}>
-              {row.map((tile, j) => (
-                <div key={j} onClick={() => play(j)}>
-                  <Tile highlight={shouldHighlight([i, j])} type={tile} />
-                </div>
-              ))}
-            </div>
-          ))}
+          <section className='flex space-x-4'>
+            <article className='flex flex-col border-2 w-1/2 max-h-[500px] overflow-y-auto'>
+              {
+                results.reverse().map((result, i) => (
+                  <div className='flex flex-col text-left my-3 p-3 rounded-md bg-white' key={i}>
+                    <h2 className='text-xl font-bold'>Move {i + 1}</h2>
+                    <p>Best move: <strong>{result.column}</strong></p>
+                    <p>Reasoning</p>
+                    <strong>{result.explanation}</strong>
+                  </div>
+                ))
+              }
+            </article>
+          <section className='w-1/2'>
+            {board.map((row, i) => (
+              <div className="flex shadow-lg" key={i}>
+                {row.map((tile, j) => (
+                  <div key={j} onClick={() => play(j)}>
+                    <Tile highlight={shouldHighlight([i, j])} type={tile} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </section>
+          </section>
         </section>
         <button
           className="bg-red-500 text-white rounded-lg p-3 w-[150px] text-lg"
           onClick={() => reset()}
         >
-          { winner ? 'Play again' : 'Reset' }
+          {winner ? 'Play again' : 'Reset'}
         </button>
       </main>
     </div>

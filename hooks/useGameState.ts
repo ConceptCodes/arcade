@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export enum GameState {
   PLAYER_IS_NEXT = 'PLAYER_IS_NEXT',
