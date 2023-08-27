@@ -71,8 +71,9 @@ export default class TicTacToe extends Game {
     return this.calculateWinner() !== null;
   }
 
-  aiMove(): Position {
-    console.log("AI is thinking...");
-    return this.minimax(this.board, this.currentPlayer).move;
+  aiMove(): void {
+    const move = this.minimax(this.board, this.currentPlayer).move;
+    console.log("AI Result: ", move);
+    this.makeMove(move);
   }
 }

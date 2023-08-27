@@ -46,7 +46,7 @@ const ChessPage: NextPage = () => {
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Head>
         <title>Chess</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.svg" />
       </Head>
       <main className="flex bg-slate-200 flex-col items-center justify-center w-full flex-1 px-10">
         <section className="flex flex-row justify-between w-full space-x-6">
@@ -70,9 +70,9 @@ const ChessPage: NextPage = () => {
                     </div>
                     <strong>Reasoning</strong>
                     <p className="text-gray-500">{result.explanation}</p>
-                    {result.column && (
+                    {/* {result.column && (
                       <p className="text-gray-500 mt-4">Column: {result.column}</p>
-                    )}
+                    )} */}
                   </div>
                 ))
               }

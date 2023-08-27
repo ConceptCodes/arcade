@@ -41,8 +41,6 @@ export default abstract class Game {
       this.currentPlayer === Players.YOU
         ? GameState.CPU_IS_NEXT
         : GameState.PLAYER_IS_NEXT;
-    console.log(this.currentState);
-    console.log(this.currentPlayer);
   }
 
   reset() {
@@ -63,10 +61,68 @@ export default abstract class Game {
     return empty;
   }
 
+  // minimax(
+  //   tiles: string[][],
+  //   player: Players,
+  //   depth: number = 0
+  // ): { score: number; move: Position } {
+  //   const scores: Record<string, number> = {
+  //     [Players.YOU]: -10,
+  //     [Players.CPU]: 10,
+  //     DRAW: 0,
+  //   };
+
+  //   const winner: string | null = this.calculateWinner();
+  //   if (winner) {
+  //     return { score: scores[winner], move: [-1, -1] };
+  //   }
+
+  //   const empty: number[][] = this.emptyTiles();
+  //   if (empty.length === 0 || depth >= MAX_DEPTH) {
+  //     return { score: scores.DRAW, move: [-1, -1] };
+  //   }
+
+  //   const moves: { score: number; move: Position }[] = [];
+  //   for (let i = 0; i < empty.length; i++) {
+  //     const [row, col]: number[] = empty[i];
+  //     tiles[row][col] = this.symbols[player];
+  //     const score: { score: number; move: Position } = this.minimax(
+  //       tiles.map((row) => [...row]),
+  //       player === Players.YOU ? Players.CPU : Players.YOU,
+  //       depth + 1
+  //     );
+  //     tiles[row][col] = "";
+  //     score.move = [row, col];
+  //     moves.push(score);
+  //   }
+
+  //   let bestMove: { score: number; move: Position } | undefined;
+  //   if (player === Players.CPU) {
+  //     let bestScore: number = -Infinity;
+  //     for (let i = 0; i < moves.length; i++) {
+  //       if (moves[i].score > bestScore) {
+  //         bestScore = moves[i].score;
+  //         bestMove = moves[i];
+  //       }
+  //     }
+  //   } else {
+  //     let bestScore: number = Infinity;
+  //     for (let i = 0; i < moves.length; i++) {
+  //       if (moves[i].score < bestScore) {
+  //         bestScore = moves[i].score;
+  //         bestMove = moves[i];
+  //       }
+  //     }
+  //   }
+  //   return bestMove!;
+  // }
   minimax(
     tiles: string[][],
     player: Players,
-    depth: number = 0
+    depth: number = 0,
+    alpha: number = -Infinity,
+    beta: number = Infinity,
+    cache: Record<string, { score: number; move: Position }> = {}
   ): { score: number; move: Position } {
     const scores: Record<string, number> = {
       [Players.YOU]: -10,
@@ -84,18 +140,38 @@ export default abstract class Game {
       return { score: scores.DRAW, move: [-1, -1] };
     }
 
+    const cacheKey = tiles.flat().join("") + player + depth;
+    if (cacheKey in cache) {
+      return cache[cacheKey];
+    }
+
     const moves: { score: number; move: Position }[] = [];
     for (let i = 0; i < empty.length; i++) {
       const [row, col]: number[] = empty[i];
       tiles[row][col] = this.symbols[player];
-      const score: { score: number; move: Position } = minimax(
+      const score: { score: number; move: Position } = this.minimax(
         tiles.map((row) => [...row]),
         player === Players.YOU ? Players.CPU : Players.YOU,
-        depth + 1
+        depth + 1,
+        alpha,
+        beta,
+        cache
       );
       tiles[row][col] = "";
       score.move = [row, col];
       moves.push(score);
+
+      if (player === Players.CPU) {
+        alpha = Math.max(alpha, score.score);
+        if (beta <= alpha) {
+          break;
+        }
+      } else {
+        beta = Math.min(beta, score.score);
+        if (beta <= alpha) {
+          break;
+        }
+      }
     }
 
     let bestMove: { score: number; move: Position } | undefined;
@@ -116,6 +192,8 @@ export default abstract class Game {
         }
       }
     }
+
+    cache[cacheKey] = bestMove!;
     return bestMove!;
   }
 

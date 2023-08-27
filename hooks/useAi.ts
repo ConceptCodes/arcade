@@ -7,8 +7,11 @@ import {
   OutputFixingParser,
 } from "langchain/output_parsers";
 
+import "dotenv/config";
+
 const model = new OpenAI({
-  openAIApiKey: "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",
+  openAIApiKey: process.env.OPENAI_API_KEY!,
+  modelName: "gpt4",
   temperature: 0.6,
   maxRetries: 3,
   maxTokens: 2000,

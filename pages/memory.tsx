@@ -87,6 +87,7 @@ const Memory: NextPage = () => {
     <>
       <Head>
         <title>Memory</title>
+        <link rel="icon" href="/logo.svg" />
       </Head>
       <main className="flex min-h-screen bg-slate-100 space-y-6 flex-col justify-center items-center">
         <div className="flex justify-between w-1/2">

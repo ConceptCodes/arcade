@@ -9,6 +9,7 @@
     "@types/crypto-js": "^4.1.1",
     "chess.js": "^1.0.0-alpha.0",
     "crypto-js": "^4.1.1",
+    "dotenv": "^16.3.1",
     "langchain": "^0.0.84",
     "next": "latest",
     "next-redux-wrapper": "^8.0.0",
