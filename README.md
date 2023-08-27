@@ -160,7 +160,7 @@ Project Link: [https://github.com/conceptcodes/arcade](https://github.com/concep
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[app-url]: https://jumba.todo-labs.dev
+[app-url]: https://arcade.conceptcodes.dev
 [Verce-url]: https://vercel.com/
 [Vercel]: https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white
 [Tailwind CSS]: https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
